@@ -18,5 +18,7 @@ Route::get('trangchu',['as'=>'trangchu','uses'=>'Qlchitieu@Get_trangchu']);
 
 Route::get('dangky',['as'=>'getdk','uses'=>'Qlchitieu@Get_dangky']);
 Route::post('dangky',['as'=>'postdk','uses'=>'Qlchitieu@Post_dangky']);
-
+Route::get('check',function(){
+    return view('check');
+});
 
