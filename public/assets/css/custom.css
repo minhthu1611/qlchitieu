@@ -142,7 +142,9 @@ a.article, a.article:hover {
   width: 100%;
   padding: 15px 5px 0 5px;
   min-height: 100vh;
-  transition: all 0.3s; }
+  transition: all 0.3s;
+  background-color: #eee;
+}
 
 /* ---------------------------------------------------
     MEDIAQUERIES

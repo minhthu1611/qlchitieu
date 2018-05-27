@@ -13,6 +13,9 @@ class Qlchitieu extends Controller
     //
     public function Get_login()
     {
+        if(Auth::guard('user')->check()){
+            return redirect('trangchu');
+        }
         return view('Login');
     }
     public function Post_login(LoginRequest $request)
@@ -29,13 +32,10 @@ class Qlchitieu extends Controller
 
     public function Get_trangchu()
     {
-        return view('trangchu');
+        return view('modules.dashboard');
     }
 
-    public function Get_dangky()
-    {
-        return view('Dangky');
-    }
+
     public function Post_dangky(DangkyRequest $request)
 	{
         // var_dump(user::all());
@@ -50,5 +50,9 @@ class Qlchitieu extends Controller
                         'level'=>json_encode(['1'])
 						]);
         return redirect()->route('trangchu');
-	}
+    }
+    public function get_dangky()
+    {
+        return view('dangky-cl');
+    }
 }

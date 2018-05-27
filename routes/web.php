@@ -11,8 +11,9 @@
 |
 */
 
-Route::get('login',['as'=>'glogin','uses'=>'Qlchitieu@Get_login']);
-Route::post('login',['as'=>'plogin','uses'=>'Qlchitieu@Post_login']);
+Route::get('/',['as'=>'glogin','uses'=>'Qlchitieu@Get_login']);
+Route::post('/',['as'=>'plogin','uses'=>'Qlchitieu@Post_login']);
+Route::get('dang-ky',['as'=>'dangky','uses'=>'Qlchitieu@get_dangky']);
 
 Route::get('trangchu',['as'=>'trangchu','uses'=>'Qlchitieu@Get_trangchu']);
 
