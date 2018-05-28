@@ -11,7 +11,7 @@
     </div>
     <ul class="list-unstyled components">
         @if(Auth::guard('user')->user()->level==0)
-        <li @if(Request::segment(2)=='user') class="active" @endif>
+        <li class="active">
             <a href="{{route('admin/user')}}"><i class="fe fe-user"></i> Người dùng</a>
             {{-- <ul class="collapse list-unstyled" id="diemdanh">
                 <li class="active"><a href="#">Điểm danh bằng tay</a></li>
@@ -25,10 +25,10 @@
         </li>
         @endif
         <li>
-            <a  href="#"><i class="fe fe-airplay"></i> Các khoản chi</a>
+            <a  href="{{route('gtkc')}}"><i class="fe fe-airplay"></i> Thêm khoản chi</a>
         </li>
         <li>
-            <a href="#"><i class="fe fe-globe"></i> Thống kê, báo cáo</a>
+            <a href="#"><i class="fe fe-globe"></i> Danh sách khoản chi</a>
         </li>
         <li>
             <a href="#quanly" data-toggle="collapse" aria-expanded="false"><i class="fe fe-eye"></i> Quản lý<i class="dropdown-toggle float-right"></i></a>
