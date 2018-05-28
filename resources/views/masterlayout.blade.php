@@ -16,12 +16,12 @@
     <title>New Điểm Danh</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext">
-    <script src="{!! asset('/assets/js/vendors/jquery-3.2.1.min.js') !!}"></script>
+    <script src="{{ asset('/assets/js/jquery.min.js') }}"></script>
     <script src="{!! asset('/assets/js/dropzone.js') !!}"></script>
     <script src="{!! asset('/assets/js/require.min.js') !!}"></script>
     <script>
       requirejs.config({
-          baseUrl: '.'
+          baseUrl: '/'
       });
     </script>
     <!-- Dashboard Core -->

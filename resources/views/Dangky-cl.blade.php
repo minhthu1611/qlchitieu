@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link href="{!! asset('/assets/css/dashboard.css') !!}" rel="stylesheet" />
-    <link rel="stylesheet" href="assets/css/custom.css">
+    <link rel="stylesheet" href="{{asset('/assets/css/custom.css')}}">
 </head>
 <body>
     <div class="container-fluid">
@@ -18,10 +18,19 @@
                         <h3 class="card-title">Đăng ký</h3>
                     </div>
                     <div class="card-body">
-                        <form action="#">
+                        <form action="" method="post">
+                            <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <div class="form-group">
-                                <label>Username</label>
-                                <input type="text" class="form-control">
+                                <label>Email</label>
+                                <input type="text" class="form-control" name="email">
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" class="form-control" name="password">
+                            </div>
+                            <div class="form-group">
+                                <label>Họ và tên</label>
+                                <input type="text" class="form-control" name="name">
                             </div>
                             <div class="form-group">
                                 <label>Giới tính</label>
@@ -38,6 +47,19 @@
                                     </label>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label>Năm sinh</label>
+                                <input type="number" class="form-control" name="namsinh">
+                                <p class="text-danger">{{$errors->first('namsinh')}}</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Địa chỉ</label>
+                                <input type="text" class="form-control" name="address">
+                            </div>
+                            <div class="form-group">
+                                <label>Thu nhập</label>
+                                <input type="number" class="form-control" name="thunhap">
+                            </div>
                             <div class="text-right">
                                 <button class="btn btn-danger">Submit</button>
                             </div>
@@ -48,4 +70,5 @@
         </div>
     </div>
 </body>
+
 </html>

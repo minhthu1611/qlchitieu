@@ -13,9 +13,9 @@ class Qlchitieu extends Controller
     //
     public function Get_login()
     {
-        if(Auth::guard('user')->check()){
-            return redirect('trangchu');
-        }
+        // if(Auth::guard('user')->check()){
+        //     return redirect('trangchu');
+        // }
         return view('Login');
     }
     public function Post_login(LoginRequest $request)
@@ -26,7 +26,7 @@ class Qlchitieu extends Controller
 				return redirect()->route('trangchu');			}
 		else
 			{
-				return redirect()->back()->with(['message'=>'Email hoặc password không đúng!']);
+				return redirect()->back()->with(['errormessage'=>'Email hoặc password không đúng!']);
 			}
     }
 
@@ -41,18 +41,23 @@ class Qlchitieu extends Controller
         // var_dump(user::all());
 		user::insert([
 						'email'=>$request->email,
-						'password'=>bcrypt($request->pass),
-                        'hoten'=>$request->hoten,
-                        'gioitinh'=>$request->gt,
-                        'tuoi'=>$request->tuoi,
-                        'diachi'=>$request->diachi,
+						'password'=>bcrypt($request->password),
+                        'hoten'=>$request->name,
+                        'gioitinh'=>$request->sex,
+                        'tuoi'=>$request->namsinh,
+                        'diachi'=>$request->address,
                         'thunhap'=>$request->thunhap,
-                        'level'=>json_encode(['1'])
+                        'level'=>'1',
 						]);
-        return redirect()->route('trangchu');
+        return redirect()->route('glogin')->with(['message'=>'Đăng ký thành công!']);
     }
     public function get_dangky()
     {
         return view('dangky-cl');
+    }
+    public function logout()
+    {
+        Auth::guard('user')->logout();
+        return redirect()->route('glogin');
     }
 }

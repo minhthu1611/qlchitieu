@@ -13,13 +13,14 @@
 
 Route::get('/',['as'=>'glogin','uses'=>'Qlchitieu@Get_login']);
 Route::post('/',['as'=>'plogin','uses'=>'Qlchitieu@Post_login']);
-Route::get('dang-ky',['as'=>'dangky','uses'=>'Qlchitieu@get_dangky']);
-
-Route::get('trangchu',['as'=>'trangchu','uses'=>'Qlchitieu@Get_trangchu']);
-
-Route::get('dangky',['as'=>'getdk','uses'=>'Qlchitieu@Get_dangky']);
-Route::post('dangky',['as'=>'postdk','uses'=>'Qlchitieu@Post_dangky']);
+Route::get('logout',['as'=>'logout','uses'=>'QLchitieu@logout']);
+Route::get('trangchu',['as'=>'trangchu','uses'=>'Qlchitieu@Get_trangchu'])->middleware('admincheck:1');
+Route::get('register',['as'=>'get_register','uses'=>'Qlchitieu@Get_dangky']);
+Route::post('register',['as'=>'post_register','uses'=>'Qlchitieu@Post_dangky']);
 Route::get('check',function(){
     return view('check');
+});
+Route::group(['prefix' => 'admin','middleware'=>'admincheck:0'], function () {
+    Route::get('user',['as'=>'admin/user','uses'=>'Admin@get_user']);
 });
 

@@ -23,6 +23,8 @@ class CreateUserTable extends Migration
             $table->string('diachi');
             $table->double('thunhap');
             $table->string('level');
+            $table->string('avatar')->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
     }
