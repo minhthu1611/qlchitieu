@@ -5,7 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\DangkyRequest;
+use App\Http\Requests\EditRequest;
+use App\Http\Requests\KhoanchiRequest;
+
 use App\models\user;
+use App\models\khoanchi;
 use Auth;
 use Validator;
 class Qlchitieu extends Controller
@@ -62,16 +66,55 @@ class Qlchitieu extends Controller
         Auth::guard('user')->logout();
         return redirect()->route('glogin');
     }
+    public function Get_edit()
+    {
+        $info=user::find(Auth::guard('user')->user()->id);
+        return view('modules.uploadavatar', compact('info'));
+    }
+    public function Post_edit(EditRequest $request)
+    {
+        $info=user::find(Auth::guard('user')->user()->id);
+        if($request->img && $request->img!=''){
 
-    // public function Get_editinfo(){
-    //     $info=user::find(Auth::guard('user')->user()->id);
-	// 	if($info)
-	// 	{
-	// 		return view('editInfoUser', compact('info'));
-	// 	}
-	// 	else
-	// 	{
-	// 		return redirect()->route('glogin');
-	// 	}
-    // }
+            $file=$request->file('img');
+            $name=$file->getClientOriginalName();
+            $file->move(public_path('/avatar'),$name);
+        
+            $info->update([
+                'hoten'=>$request->name,
+                'tuoi'=>$request->namsinh,
+                'diachi'=>$request->diachi,
+                'thunhap'=>$request->thunhap,
+                'avatar'=>$name
+            ]);
+            return redirect('trangchu')->with(['message'=>'Cập nhật thành công!']);
+        }
+        else 
+        {
+            $info->update([
+                'hoten'=>$request->name,
+                'tuoi'=>$request->namsinh,
+                'diachi'=>$request->diachi,
+                'thunhap'=>$request->thunhap,
+            ]);
+            return redirect('trangchu')->with(['message'=>'Cập nhật thành công!']);
+        }
+        
+    }
+
+    public function Get_themkhoanchi()
+    {
+        return view('modules.themkhoanchi');
+    }
+    public function Post_themkhoanchi(KhoanchiRequest $request)
+    {
+        $user_id=Auth::guard('user')->user()->id;
+        khoanchi::insert([
+            'tenkhoanchi'=> $request->tenkhoanchi,
+            'giatri'=>$request->sotien,
+            'batbuoc'=>$request->bb,
+            'user_id'=>$user_id
+        ]);
+        return redirect()->route('trangchu')->with(['message'=>'Đăng ký thành công!']);
+    }
 }
