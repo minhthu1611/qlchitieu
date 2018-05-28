@@ -60,4 +60,8 @@ class Qlchitieu extends Controller
         Auth::guard('user')->logout();
         return redirect()->route('glogin');
     }
+    public function Get_edit()
+    {
+        return view('modules.uploadavatar');
+    }
 }

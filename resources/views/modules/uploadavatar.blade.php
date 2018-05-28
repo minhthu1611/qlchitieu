@@ -13,14 +13,14 @@
 						</div>
 					</div>
 					<div class="card-body">
-						<form >
+						<form action="" method="post" enctype="multipart/form-data">
 							<div class="form-group">
 								<label>Gõ vô</label>
 								<input type="text" class="form-control">
 							</div>
 							<div class="form-group">
 								<div class="custom-file">
-										<input type="file" class="custom-file-input" name="example-file-input-custom">
+										<input type="file" class="custom-file-input"  id="imgInp" name="img	">
 										<label class="custom-file-label">Tải tệp lên</label>
 								</div>
 							</div>
@@ -43,7 +43,7 @@
 					</div>
 					<div class="card-body">
 						<div class="img-detection">
-							<img class="rounded" width="100%" src="{!!asset('assets/images/faces.png') !!}" alt="">
+							<img class="rounded"  id='img-upload' width="100%" src="{!!asset('assets/images/faces.png') !!}" alt="">
 						</div>
 					</div>
 				</div>

@@ -7,7 +7,7 @@
     </div>
     <ul class="list-unstyled components">
         @if(Auth::guard('user')->user()->level==0)
-        <li class="active">
+        <li @if(Request::segment(2)=='user') class="active" @endif>
             <a href="{{route('admin/user')}}"><i class="fe fe-user"></i> Người dùng</a>
             {{-- <ul class="collapse list-unstyled" id="diemdanh">
                 <li class="active"><a href="#">Điểm danh bằng tay</a></li>
