@@ -62,4 +62,16 @@ class Qlchitieu extends Controller
         Auth::guard('user')->logout();
         return redirect()->route('glogin');
     }
+
+    // public function Get_editinfo(){
+    //     $info=user::find(Auth::guard('user')->user()->id);
+	// 	if($info)
+	// 	{
+	// 		return view('editInfoUser', compact('info'));
+	// 	}
+	// 	else
+	// 	{
+	// 		return redirect()->route('glogin');
+	// 	}
+    // }
 }

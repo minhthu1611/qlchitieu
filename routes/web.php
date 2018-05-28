@@ -25,7 +25,5 @@ Route::group(['prefix' => 'admin','middleware'=>'admincheck:0'], function () {
     Route::get('user',['as'=>'admin/user','uses'=>'Admin@get_user']);
 });
 
-Route::any('nn', function () {
-    return view('fixInfoUser');
-});
+Route::get('editinfouser',['as'=>'Get_editinfo','uses'=>'Qlchitieu@Get_editinfo']);
 
