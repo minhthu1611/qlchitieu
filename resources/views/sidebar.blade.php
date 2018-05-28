@@ -1,7 +1,11 @@
 <nav id="sidebar">
     <div class="profile">
         <div class="d-flex justify-content-center py-4">
-                <span class="avatar avatar-xxl" style="background-image: url({!!asset('/avatar/'.Auth::guard('user')->user()->avtar) !!}"></span>
+            @if(Auth::guard('user')->user()->avatar!='')
+                <span class="avatar avatar-xxl" style="background-image: url({!!asset('/avatar/'.Auth::guard('user')->user()->avatar) !!}"></span>
+            @else
+                <span class="avatar avatar-xxl" style="background-image: url({!!asset('/avatar/photo.jpg') !!}"></span>
+            @endif
         </div>
         <h5 class="text-center">{{Auth::guard('user')->user()->hoten}}</h5>
     </div>
@@ -15,9 +19,13 @@
                 <i class="dropdown-toggle float-right"></i>
             </ul> --}}
         </li>
+        @else
+        <li class="active">
+                <a href=""> Home</a>
+        </li>
         @endif
         <li>
-            <a  href="#"><i class="fe fe-airplay"></i> Nhập điểm</a>
+            <a  href="#"><i class="fe fe-airplay"></i> Các khoản chi</a>
         </li>
         <li>
             <a href="#"><i class="fe fe-globe"></i> Thống kê, báo cáo</a>
