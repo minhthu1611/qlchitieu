@@ -11,6 +11,7 @@
 |
 */
 //tao la thu
+//uk t biet m la thu r
 Route::get('/',['as'=>'glogin','uses'=>'Qlchitieu@Get_login']);
 Route::post('/',['as'=>'plogin','uses'=>'Qlchitieu@Post_login']);
 Route::get('logout',['as'=>'logout','uses'=>'QLchitieu@logout']);
