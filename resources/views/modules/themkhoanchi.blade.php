@@ -22,7 +22,7 @@
                                 </div>
                                 <div class="form-group">
                                         <label>Số tiền</label>
-                                        <input type="text" class="form-control" name="sotien" value="">
+                                        <input type="number" class="form-control" name="sotien" value="">
                                         <p class="text-danger">{{$errors->first('sotien')}}</p>
                                     </div>
                                 <div class="form-group">

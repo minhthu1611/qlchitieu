@@ -117,4 +117,10 @@ class Qlchitieu extends Controller
         ]);
         return redirect()->route('trangchu')->with(['message'=>'Đăng ký thành công!']);
     }
+
+    public function Get_dskhoanchi()
+    {
+        $data=khoanchi::where('user_id',Auth::guard('user')->user()->id);
+        return view('modules.dskhoanchi',compact('data'));
+    }
 }
