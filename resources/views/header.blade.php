@@ -41,10 +41,14 @@
         <!-- User -->
         <div class="dropdown">
             <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
-                <span class="avatar" style="background-image: url({{asset('/avatar/'.Auth::guard('user')->user()->avtar)}}"></span>
+              @if(Auth::guard('user')->user()->avatar!='')
+                <span class="avatar" style="background-image: url({{asset('/avatar/'.Auth::guard('user')->user()->avatar)}}"></span>
+              @else
+                <span class="avatar" style="background-image: url({!!asset('/avatar/photo.jpg') !!}"></span>
+              @endif  
                 <span class="ml-2 d-none d-lg-block">
                   <span class="text-default">{{Auth::guard('user')->user()->hoten}}</span>
-                  @if(Auth::guard('user')->user()->hoten==0)
+                  @if(Auth::guard('user')->user()->level==0)
                   <small class="text-muted d-block mt-1">Administrator</small>
                   @else
                   <small class="text-muted d-block mt-1">User</small>

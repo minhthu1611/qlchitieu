@@ -13,10 +13,11 @@ class Qlchitieu extends Controller
     //
     public function Get_login()
     {
-        // if(Auth::guard('user')->check()){
-        //     return redirect('trangchu');
-        // }
-        return view('Login');
+        if(Auth::guard('user')->check()){
+            return redirect('trangchu');
+        }
+        else
+            return view('Login');
     }
     public function Post_login(LoginRequest $request)
     {
@@ -34,6 +35,7 @@ class Qlchitieu extends Controller
     {
         return view('modules.dashboard');
     }
+    
 
 
     public function Post_dangky(DangkyRequest $request)
@@ -53,7 +55,7 @@ class Qlchitieu extends Controller
     }
     public function get_dangky()
     {
-        return view('dangky-cl');
+        return view('Dangky-cl');
     }
     public function logout()
     {

@@ -15,15 +15,14 @@
                 <div class="card">
                     <div class="card-status bg-red"></div>
                     <div class="card-header">
-                        <h3 class="card-title">Đăng ký</h3>
+                        <h3 class="card-title">Thông tin cá nhân</h3>
                     </div>
                     <div class="card-body">
                         <form action="" method="post">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <div class="form-group">
                                 <label>Email</label>
-                                <input type="text" class="form-control" name="email" value="{{old('email')}}">
-                                <p class="text-danger">{{$errors->first('email')}}</p>
+                                <input type="text-area" class="form-control" name="email" value="">
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
@@ -32,10 +31,10 @@
                             </div>
                             <div class="form-group">
                                 <label>Họ và tên</label>
-                                <input type="text" class="form-control" name="name" value="{{old('name')}}">
+                                <input type="text" class="form-control" name="name" value="">
                                 <p class="text-danger">{{$errors->first('name')}}</p>
                             </div>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label>Giới tính</label>
                                 <div class="custom-switches-stacked">
                                     <label class="custom-switch">
@@ -49,20 +48,20 @@
                                         <span class="custom-switch-description">Nữ</span>
                                     </label>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <label>Năm sinh</label>
-                                <input type="number" class="form-control" name="namsinh" value="{{old('namsinh')}}">
+                                <input type="number" class="form-control" name="namsinh" value="">
                                 <p class="text-danger">{{$errors->first('namsinh')}}</p>
                             </div>
                             <div class="form-group">
                                 <label>Địa chỉ</label>
-                                <input type="text" class="form-control" name="address" value="{{old('address')}}">
+                                <input type="text" class="form-control" name="address" value="">
                                 <p class="text-danger">{{$errors->first('address')}}</p>
                             </div>
                             <div class="form-group">
                                 <label>Thu nhập</label>
-                                <input type="number" class="form-control" name="thunhap" value="{{old('thunhap')}}">
+                                <input type="number" class="form-control" name="thunhap" value="">
                                 <p class="text-danger">{{$errors->first('thunhap')}}</p>
                             </div>
                             <div class="text-right">
