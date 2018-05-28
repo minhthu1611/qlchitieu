@@ -32,7 +32,3 @@ Route::get('checked', function () {
     return view('api');
 });
 
-Route::any('nn', function () {
-    return view('fixInfoUser');
-});
-

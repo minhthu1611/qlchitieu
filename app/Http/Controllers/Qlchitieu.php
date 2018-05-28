@@ -8,6 +8,7 @@ use App\Http\Requests\DangkyRequest;
 use App\models\user;
 use Auth;
 use Validator;
+use GuzzleHttp\Client;
 class Qlchitieu extends Controller
 {
     //
@@ -65,5 +66,20 @@ class Qlchitieu extends Controller
     public function Get_edit()
     {
         return view('modules.uploadavatar');
+    }
+    public function Get_api()
+    {
+        $client = new Client([
+            // Base URI is used with relative requests
+            'base_uri' => 'http://phongkinhtecairang.com/',
+            // You can set any number of default request options.
+            'timeout'  => 20.0,
+        ]);
+        $response = $client->request('GET',"info/thuan");
+            return $response->getBody(); //tra chuoi dc ne a
+            // cai nay a ko biet r, cai loi no ko lay dc ket qua ben kia r, s chuoi thi no lay dc moi ac, them cai getcontent gi do vao thu xem s e thu r k dc a @@
+        //chay lai cai route nay cho a coi thu do a  ben day goi request qua kia lay a
+            // roi thang nay lay ve ah da
+            // cai nay a chiu r da  v e kiem cai khac
     }
 }
