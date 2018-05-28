@@ -26,6 +26,7 @@
                                             <th>Tên khoản chi</th>
                                             <th>Số tiền</th>
                                             <th>Bắt buộc</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -38,13 +39,10 @@
                                                 </label>
                                             </td>
                                             <td>{{$key+1}}</td>
-                                            <td>{{$val->email}}</td>
-                                            <td>{{$val->hoten}}</td>
-                                            <td>{{$val->gioitinh}}</td>
-                                            <td>{{$val->tuoi}}</td>
-                                            <td>{{$val->diachi}}</td>
-                                            <td>{{number_format($val->thunhap)}}</td>
-                                            <td><button class="btn btn-danger"><i class="fe fe-trash"></i></button></td>
+                                            <td>{{$val->tenkhoanchi}}</td>
+                                            <td>{{$val->giatri}}</td>
+                                            <td>{{$val->batbuoc}}</td>
+                                            <td><button class="btn btn-danger delete"><i class="fe fe-trash"></i></button></td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -56,4 +54,27 @@
             </div>
         </div>
     </div>
+    @if(Session::has('message'))
+    <script>
+        mess('success',"{{Session::get('message')}}")
+    </script>
+    @endif
+    <script>
+        $('.delete').click(function () { 
+            var t=$(this).closest('tr').find('input:checkbox').val()
+            $.ajax({
+                type: "post",
+                url: "{{route('delete_kc')}}",
+                data: {
+                    "_token":"{{csrf_token()}}",
+                    'id':t
+                },
+                success: function (response) {
+                    if(response=='ok')
+                        location.reload()
+                }
+            });
+            
+        });
+    </script>
 @endsection

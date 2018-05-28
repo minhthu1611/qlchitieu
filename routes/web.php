@@ -26,6 +26,9 @@ Route::group(['middleware' => ['admincheck:1']], function () {
 
     Route::get('themkhoanchi',['as'=>'gtkc','uses'=>'Qlchitieu@Get_themkhoanchi']);
     Route::post('themkhoanchi',['as'=>'ptkc','uses'=>'Qlchitieu@Post_themkhoanchi']);
+
+    Route::get('danh-sach-khoan-chi',['as'=>'dskc','uses'=>'Qlchitieu@Get_dskhoanchi']);
+    Route::post('delete_kc',['as'=>'delete_kc','uses'=>'Qlchitieu@Post_ajax_delete_kc']);
 });
 Route::get('check',function(){
     return view('check');
@@ -36,3 +39,5 @@ Route::group(['prefix' => 'admin','middleware'=>'admincheck:0'], function () {
 Route::get('checked', function () {
     return view('api');
 });
+Route::get('carbon', 'Qlchitieu@carbon');
+

@@ -12,6 +12,8 @@ use App\models\user;
 use App\models\khoanchi;
 use Auth;
 use Validator;
+use GuzzleHttp\Client;
+use Carbon;
 class Qlchitieu extends Controller
 {
     //
@@ -108,19 +110,61 @@ class Qlchitieu extends Controller
     }
     public function Post_themkhoanchi(KhoanchiRequest $request)
     {
-        $user_id=Auth::guard('user')->user()->id;
-        khoanchi::insert([
-            'tenkhoanchi'=> $request->tenkhoanchi,
-            'giatri'=>$request->sotien,
-            'batbuoc'=>$request->bb,
-            'user_id'=>$user_id
-        ]);
-        return redirect()->route('trangchu')->with(['message'=>'Đăng ký thành công!']);
+        try{
+            $user_id=Auth::guard('user')->user()->id;
+            khoanchi::insert([
+                'tenkhoanchi'=> $request->tenkhoanchi,
+                'giatri'=>$request->sotien,
+                'batbuoc'=>$request->bb,
+                'user_id'=>$user_id,
+                'created_at'=>Carbon::now()
+            ]);
+            return redirect()->route('dskc')->with(['message'=>'Thêm thành công!']);
+        }
+        catch(\Illuminate\Database\QueryException $ex){ 
+            return redirect()->back()->with(['message'=>'Không thể thêm!']);
+        }
+      
     }
+
 
     public function Get_dskhoanchi()
     {
-        $data=khoanchi::where('user_id',Auth::guard('user')->user()->id);
+        $data=khoanchi::where('user_id',Auth::guard('user')->user()->id)->get();
         return view('modules.dskhoanchi',compact('data'));
+    }
+    // public function Get_api()
+    // {
+    //     $client = new Client([
+    //         // Base URI is used with relative requests
+    //         'base_uri' => 'http://phongkinhtecairang.com/',
+    //         // You can set any number of default request options.
+    //         'timeout'  => 20.0,
+    //     ]);
+    //     $response = $client->request('GET',"info/thuan");
+    //         return $response->getBody(); //tra chuoi dc ne a
+    //         // cai nay a ko biet r, cai loi no ko lay dc ket qua ben kia r, s chuoi thi no lay dc moi ac, them cai getcontent gi do vao thu xem s e thu r k dc a @@
+    //     //chay lai cai route nay cho a coi thu do a  ben day goi request qua kia lay a
+    //         // roi thang nay lay ve ah da
+    //         // cai nay a chiu r da  v e kiem cai khac
+    // }
+    public function carbon()
+    {
+        return Carbon::now();
+    }
+    public function Post_ajax_delete_kc(Request $request)
+    {
+        if($request->ajax())
+        {
+            try
+            {
+                khoanchi::find($request->id)->delete();
+                return 'ok';
+            }
+            catch(\Illuminate\Database\QueryException $ex){ 
+               return 'error';
+            }
+           
+        }
     }
 }

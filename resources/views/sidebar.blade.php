@@ -28,7 +28,7 @@
             <a  href="{{route('gtkc')}}"><i class="fe fe-airplay"></i> Thêm khoản chi</a>
         </li>
         <li>
-            <a href="#"><i class="fe fe-globe"></i> Danh sách khoản chi</a>
+        <a href="{{route('dskc')}}"><i class="fe fe-globe"></i> Danh sách khoản chi</a>
         </li>
         <li>
             <a href="#quanly" data-toggle="collapse" aria-expanded="false"><i class="fe fe-eye"></i> Quản lý<i class="dropdown-toggle float-right"></i></a>

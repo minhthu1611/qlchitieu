@@ -52,4 +52,9 @@
             </div>
         </div>
     </div>
+    @if(Session::has('message'))
+    <script>
+        mess('erorr',"{{Session::get('message')}}")
+    </script>
+    @endif
 @endsection
