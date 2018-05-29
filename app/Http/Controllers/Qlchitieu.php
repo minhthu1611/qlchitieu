@@ -7,9 +7,11 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\DangkyRequest;
 use App\Http\Requests\EditRequest;
 use App\Http\Requests\KhoanchiRequest;
+use App\Http\Requests\ChitieuRequest;
 
 use App\models\user;
 use App\models\khoanchi;
+use App\models\chitieungay;
 use Auth;
 use Validator;
 use GuzzleHttp\Client;
@@ -110,15 +112,69 @@ class Qlchitieu extends Controller
     }
     public function Post_themkhoanchi(KhoanchiRequest $request)
     {
-        $user_id=Auth::guard('user')->user()->id;
-        khoanchi::insert([
-            'tenkhoanchi'=> $request->tenkhoanchi,
-            'giatri'=>$request->sotien,
-            'batbuoc'=>$request->bb,
-            'user_id'=>$user_id,
-            'created_at'=>Carbon::now()
-        ]);
-        return redirect()->route('trangchu')->with(['message'=>'Đăng ký thành công!']);
+        $data=user::find(Auth::guard('user')->user()->id);
+        if(intval($data->thunhap)<intval($request->sotien))
+        {
+            return redirect()->back()->with(['error'=>'Giá trị không được lớn hơn thu nhập của bạn']);
+        }
+        else{
+
+            try{
+                $user_id=Auth::guard('user')->user()->id;
+                khoanchi::insert([
+                    'tenkhoanchi'=> $request->tenkhoanchi,
+                    'giatri'=>$request->sotien,
+                    'batbuoc'=>1,
+                    'user_id'=>$user_id,
+                    'created_at'=>Carbon::now()
+                ]);
+                return redirect()->route('dskc')->with(['message'=>'Thêm thành công!']);
+            }
+            catch(\Illuminate\Database\QueryException $ex){ 
+                return redirect()->back()->with(['message'=>'Không thể thêm!']);
+            }               
+        }
+      
+    }
+
+
+    public function Get_dskhoanchi()
+    {
+        $data=khoanchi::where('user_id',Auth::guard('user')->user()->id)->get();
+        return view('modules.dskhoanchi',compact('data'));
+    }
+
+    public function Get_chitieungay(){
+        return view('modules/themchitieu');
+    }
+    public function Post_chitieungay(ChitieuRequest $request){
+        $data=user::find(Auth::guard('user')->user()->id);
+        if(intval($data->thunhap)<intval($request->giatri))
+        {
+            return redirect()->back()->with(['error'=>'Giá trị không được lớn hơn thu nhập của bạn']);
+        }
+        else{
+
+            try{
+                // $user_id=Auth::guard('user')->user()->id;
+                chitieungay::insert([
+                    'chitieu'=> $request->chitieungay,
+                    'giatri'=>$request->giatri,
+                    'user_id'=>$data->id,
+                    'created_at'=>Carbon::now()
+                ]);
+                return redirect()->route('tkct')->with(['message'=>'Thêm thành công!']);
+            }
+            catch(\Illuminate\Database\QueryException $ex){ 
+                return redirect()->back()->with(['message'=>'Không thể thêm!']);
+            }               
+        }
+    }
+    public function Get_thongkechitieu()
+    {
+        $data=chitieungay::where('user_id',Auth::guard('user')->user()->id)->get();
+        $info=user::find(Auth::guard('user')->user()->id);
+        return view('modules.thongkechitieu',compact('data','info'));
     }
     // public function Get_api()
     // {
@@ -135,8 +191,35 @@ class Qlchitieu extends Controller
     //         // roi thang nay lay ve ah da
     //         // cai nay a chiu r da  v e kiem cai khac
     // }
-    public function carbon()
+    public function Post_ajax_delete_kc(Request $request)
     {
-        return Carbon::now();
+        if($request->ajax())
+        {
+            try
+            {
+                khoanchi::find($request->id)->delete();
+                return 'ok';
+            }
+            catch(\Illuminate\Database\QueryException $ex){ 
+               return 'error';
+            }
+           
+        }
+    }
+
+    public function Post_ajax_delete_ct(Request $request)
+    {
+        if($request->ajax())
+        {
+            try
+            {
+                chitieungay::find($request->id)->delete();
+                return 'ok';
+            }
+            catch(\Illuminate\Database\QueryException $ex){ 
+               return 'error';
+            }
+           
+        }
     }
 }

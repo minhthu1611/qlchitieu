@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class KhoanchiRequest extends FormRequest
+class ChitieuRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,17 +24,17 @@ class KhoanchiRequest extends FormRequest
     public function rules()
     {
         return [
-            'tenkhoanchi'=>'required',
-            'sotien'=>'required|numeric|min:10000'
+            'chitieungay'=>'required',
+            'giatri'=>'required|numeric|min:10000'
         ];
     }
     public function messages()
     {
         return[
-            'tenkhoanchi.required'=>"Tên khoản chi trống!",
-            'sotien.required'=>"Giá trị khoản chi không được rỗng!",
-            'sotien.min'=>"Giá trị khoản chi phải lớn hơn 1.000",
-            'sotien.numeric'=>"Phải là kiểu số!"
+            'chitieungay.required'=>"Tên khoản chi trống!",
+            'giatri.required'=>"Giá trị khoản chi không được rỗng!",
+            'giatri.min'=>"Giá trị khoản chi phải lớn hơn 1.000",
+            'giatri.numeric'=>"Phải là kiểu số!"
         ];
     }
 }
