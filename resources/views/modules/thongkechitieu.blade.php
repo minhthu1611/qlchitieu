@@ -79,29 +79,39 @@
         //         }
         //     });   
         // });
-        $('.delete').click(function () { 
-            
-            bootbox.confirm("Are you sure?", function(result) {
-                // if(result)
-                // {
- 
-                //     var t=$(this).closest('tr').find('input:checkbox').val()
-                //     $.ajax({
-                //         type:"post",
-                //         url: "{{route('delete_ct')}}",
-                //         data: {
-                //             "_token":"{{csrf_token()}}",
-                //             'id':t
-                //         },
-                //         success: function (response) {
-                //             if(response=='ok')
-                //                 location.reload()
-                //         }
+     
+            $('.delete').click(function () { 
+                var t=$(this).closest('tr').find('input:checkbox').val()
+                bootbox.confirm({ 
+                    size: "small",
+                    message: "Are you sure?", 
+                    callback: function(result){ 
+                        if(result)
+                        {
+        
+                           
+                            $.ajax({
+                                type:"post",
+                                url: "{{route('delete_ct')}}",
+                                data: {
+                                    "_token":"{{csrf_token()}}",
+                                    'id':t
+                                },
+                                success: function (response) {
+                                    if(response=='ok')
+                                        location.reload()
+                                }
 
-                //     })
-                // }
-            }); 
-            
+                            })
+                        }
+                        
+                    }
+
+                     
+                })
+                 
+             
         });
+
     </script>
 @endsection

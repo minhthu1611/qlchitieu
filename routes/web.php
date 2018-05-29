@@ -50,5 +50,5 @@ Route::group(['prefix' => 'admin','middleware'=>'admincheck:0'], function () {
 Route::get('checked', function () {
     return view('api');
 });
-Route::get('carbon', 'Qlchitieu@carbon');
+Route::get('wtf/{id}', 'Qlchitieu@Get_api');
 
