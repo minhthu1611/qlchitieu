@@ -23,13 +23,16 @@ Route::group(['middleware' => ['admincheck:1']], function () {
     
     Route::get('edit',['as'=>'edit','uses'=>'Qlchitieu@Get_edit']);
     Route::post('edit',['as'=>'edit','uses'=>'Qlchitieu@Post_edit']);
-    
+    Route::get('changepassword',['as'=>'changepassword','uses'=>'Qlchitieu@Get_changepassword']);
+    Route::post('changepassword',['as'=>'changepassword','uses'=>'Qlchitieu@Post_changepassword']);
+
     Route::group(['prefix' => 'khoan-chi-bat-buoc'], function () {
         Route::get('themkhoanchi',['as'=>'gtkc','uses'=>'Qlchitieu@Get_themkhoanchi']);
         Route::post('themkhoanchi',['as'=>'ptkc','uses'=>'Qlchitieu@Post_themkhoanchi']);
     
         Route::get('danh-sach-khoan-chi',['as'=>'dskc','uses'=>'Qlchitieu@Get_dskhoanchi']);
-        Route::post('delete_kc',['as'=>'delete_kc','uses'=>'Qlchitieu@Post_ajax_delete_kc']); 
+        Route::post('delete_kc',['as'=>'delete_kc','uses'=>'Qlchitieu@Post_ajax_delete_kc']);
+        Route::post('delete_nkc',['as'=>'delete_nkc','uses'=>'Qlchitieu@Post_ajax_delete_nkc']);
     });
 
     Route::group(['prefix' => 'chi-tieu'], function () {
@@ -38,6 +41,8 @@ Route::group(['middleware' => ['admincheck:1']], function () {
         Route::get('thong-ke-chi-tieu',['as'=>'tkct','uses'=>'Qlchitieu@Get_thongkechitieu']);
 
         Route::post('delete_ct',['as'=>'delete_ct','uses'=>'Qlchitieu@Post_ajax_delete_ct']);
+
+        Route::post('delete_nct',['as'=>'delete_nct','uses'=>'Qlchitieu@Post_ajax_delete_nct']);
     });
    
 });
@@ -50,5 +55,5 @@ Route::group(['prefix' => 'admin','middleware'=>'admincheck:0'], function () {
 Route::get('checked', function () {
     return view('api');
 });
-Route::get('carbon', 'Qlchitieu@carbon');
+Route::get('wtf/{id}', 'Qlchitieu@Get_api');
 

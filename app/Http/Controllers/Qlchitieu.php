@@ -8,6 +8,7 @@ use App\Http\Requests\DangkyRequest;
 use App\Http\Requests\EditRequest;
 use App\Http\Requests\KhoanchiRequest;
 use App\Http\Requests\ChitieuRequest;
+use App\Http\Requests\ChangepasswordRequest;
 
 use App\models\user;
 use App\models\khoanchi;
@@ -16,6 +17,8 @@ use Auth;
 use Validator;
 use GuzzleHttp\Client;
 use Carbon;
+use DB;
+use Hash;
 class Qlchitieu extends Controller
 {
     //
@@ -113,7 +116,8 @@ class Qlchitieu extends Controller
     public function Post_themkhoanchi(KhoanchiRequest $request)
     {
         $data=user::find(Auth::guard('user')->user()->id);
-        if(intval($data->thunhap)<intval($request->sotien))
+        $money=khoanchi::where('user_id',Auth::guard('user')->user()->id)->sum('giatri');
+        if(intval($data->thunhap)<intval($request->sotien)||intval($money)+intval($request->sotien)>intval($data->thunhap))
         {
             return redirect()->back()->with(['error'=>'Giá trị không được lớn hơn thu nhập của bạn']);
         }
@@ -170,27 +174,30 @@ class Qlchitieu extends Controller
             }               
         }
     }
-    public function Get_thongkechitieu()
+    public function Get_thongkechitieu(Request $request)
     {
-        $data=chitieungay::where('user_id',Auth::guard('user')->user()->id)->get();
+       if($request->get('query') && $request->get('query')!='')
+       {
+            $data=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('created_at','like','%'.$request->get('query').'%')->get();
+            $money=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('created_at','like','%'.$request->get('query').'%')->sum('giatri');
+       }
+       else
+       {
+            $data=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('created_at','like','%'.date("Y-m").'%')->get();
+            $money=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('created_at','like','%'.date("Y-m").'%')->sum('giatri');
+       }
+        
         $info=user::find(Auth::guard('user')->user()->id);
-        return view('modules.thongkechitieu',compact('data','info'));
+    
+        $money_can_use=$info->thunhap-$money;
+        return view('modules.thongkechitieu',compact('data','info','money_can_use'));
     }
-    // public function Get_api()
-    // {
-    //     $client = new Client([
-    //         // Base URI is used with relative requests
-    //         'base_uri' => 'http://phongkinhtecairang.com/',
-    //         // You can set any number of default request options.
-    //         'timeout'  => 20.0,
-    //     ]);
-    //     $response = $client->request('GET',"info/thuan");
-    //         return $response->getBody(); //tra chuoi dc ne a
-    //         // cai nay a ko biet r, cai loi no ko lay dc ket qua ben kia r, s chuoi thi no lay dc moi ac, them cai getcontent gi do vao thu xem s e thu r k dc a @@
-    //     //chay lai cai route nay cho a coi thu do a  ben day goi request qua kia lay a
-    //         // roi thang nay lay ve ah da
-    //         // cai nay a chiu r da  v e kiem cai khac
-    // }
+    public function Get_api($id)
+    {
+        $client = new \GuzzleHttp\Client();
+        $res = $client->request('GET', 'http://phongkinhtecairang.com/api/fuck/'.$id);
+        echo $res->getBody();
+    }
     public function Post_ajax_delete_kc(Request $request)
     {
         if($request->ajax())
@@ -222,4 +229,53 @@ class Qlchitieu extends Controller
            
         }
     }
+
+    public function Post_ajax_delete_nct(Request $request)
+    {
+        if($request->ajax())
+        {
+            try
+            {
+                chitieungay::whereIn('id',$request->id)->delete();
+                return 'ok';
+            }
+            catch(\Illuminate\Database\QueryException $ex){ 
+               return 'error';
+            }
+           
+        }
+    }
+
+    public function Post_ajax_delete_nkc(Request $request)
+    {
+        if($request->ajax())
+        {
+            try
+            {
+                khoanchi::whereIn('id',$request->id)->delete();
+                return 'ok';
+            }
+            catch(\Illuminate\Database\QueryException $ex){ 
+               return 'error';
+            }
+           
+        }
+    }
+    public function Get_changepassword()
+    {
+        return view('modules.changepassword');
+    }
+    public function Post_changepassword(ChangepasswordRequest $request)
+    {
+        $info=user::find(Auth::guard('user')->user()->id);
+        if(Hash::check($request->password, $info->password))
+        {
+            echo "ahihi";
+        }
+        else 
+        {
+            return redirect()->back()->with(['errorpassword'=>'Nhập mật khẩu cũ không đúng!']);
+        }
+    }
+    //Đồ nhu nhược dìa làm update pass
 }

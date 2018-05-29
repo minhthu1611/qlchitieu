@@ -159,7 +159,7 @@ a.article, a.article:hover {
   #sidebarCollapse span {
     display: none; } }
 .header {
-  background-image: linear-gradient(to right, #c70000,#C0DA1d); }
+  background-color: #c70000 }
   .header i {
     color: #fff; }
   .header .text-default {

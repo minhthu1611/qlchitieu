@@ -6,10 +6,10 @@ shim: {
 'vector-map': ['jquery'],
 'vector-map-de': ['vector-map', 'jquery'],
 'vector-map-world': ['vector-map', 'jquery'],
-'core': ['bootstrap', 'jquery'],
+'core': ['bootstrap', 'jquery']
 },
 paths: {
-'core': 'quanlychitieu/assets/js/core',
+'core': '/assets/js/core',
 'jquery': '/assets/js/vendors/jquery-3.2.1.min',
 'bootstrap': '/assets/js/vendors/bootstrap.bundle.min',
 'sparkline': '/assets/js/vendors/jquery.sparkline.min',
@@ -19,6 +19,8 @@ paths: {
 'vector-map-de': '/assets/js/vendors/jquery-jvectormap-de-merc',
 'vector-map-world': '/assets/js/vendors/jquery-jvectormap-world-mill',
 'circle-progress': '/assets/js/vendors/circle-progress.min',
+'bootbox':'/assets/js/bootbox.min',
+'swag' : '/assets/js/sweetalert2'
 }
 });
 window.tabler = {
