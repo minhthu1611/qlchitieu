@@ -43,15 +43,15 @@
                     </li>
                 </ul>
             </li>
-        <li @if(Request::segment(1)=='edit'||Request::segment(1)=='chang-pass') class='active' @endif>
+        <li @if(Request::segment(1)=='edit'||Request::segment(1)=='changepassword') class='active' @endif>
             <a href="#taikhoan" data-toggle="collapse" aria-expanded="false"><i class="fe fe-eye"></i>Tài khoản<i class="dropdown-toggle float-right"></i></a>
-            <ul @if(Request::segment(1)=='edit') class="collapsed list-unstyled" @endif class="collapse list-unstyled" id="taikhoan">
+            <ul @if(Request::segment(1)=='edit' ||Request::segment(1)=='changepassword') class="collapsed list-unstyled" @endif class="collapse list-unstyled" id="taikhoan">
                 <li @if(Request::segment(1)=='edit' ) class='active' @endif ><a href="{{route('edit')}}">Cập nhật thông tin</a></li>
-                <li @if(Request::segment(1)=='changpassword' ) class='active' @endif ><a href="{{route('changepassword')}}">Đổi mật khẩu</a></li>
+                <li @if(Request::segment(1)=='changepassword') class='active' @endif ><a href="{{route('changepassword')}}">Đổi mật khẩu</a></li>
             </ul>
         </li>
         <li>
-        <a href="{{route('logout')}}"><i class="fe fe-power"></i> Sửa buổi vắng</a>
+        <a href="{{route('logout')}}"><i class="fe fe-power"></i> Đăng xuất</a>
         </li>
     </ul>
 </nav>
