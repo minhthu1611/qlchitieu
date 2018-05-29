@@ -279,4 +279,5 @@ class Qlchitieu extends Controller
         }
     }
     //Đồ nhu nhược dìa làm update pass
+    //em làm hàm update password ở trong cái else. nhớ mã hóa kieu bcrypt
 }
