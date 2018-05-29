@@ -267,14 +267,15 @@ class Qlchitieu extends Controller
     }
     public function Post_changepassword(ChangepasswordRequest $request)
     {
-        $info=user::find(Auth::guard('user')->user()->id);
-        if(Hash::check($request->password, $info->password))
+        // $info=user::find(Auth::guard('user')->user()->id);
+        if(!Hash::check($request->now_password, Auth::guard('user')->user()->password))
         {
-            echo "ahihi";
+
+            return redirect()->back()->with(['errorpassword'=>'Nhập mật khẩu cũ không đúng!']);
         }
         else 
         {
-            return redirect()->back()->with(['errorpassword'=>'Nhập mật khẩu cũ không đúng!']);
+            echo "ahihi";
         }
     }
     //Đồ nhu nhược dìa làm update pass
