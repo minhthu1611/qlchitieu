@@ -23,14 +23,15 @@
                                         <tr class="bg-red">
                                             <th><button class="btn btn-danger"><i class="fe fe-trash"></i></button></th>
                                             <th>Stt</th>
-                                            <th>Tên khoản chi</th>
-                                            <th>Số tiền</th>
-                                            <th>Bắt buộc</th>
+                                            <th>Chi tiêu ngày</th>
+                                            <th>Giá trị</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <?php $tien=0 ?>
                                         @foreach($data as $key=>$val)
+                                     
                                         <tr>
                                             <td>
                                                 <label class="custom-control custom-checkbox ml-3">
@@ -39,12 +40,15 @@
                                                 </label>
                                             </td>
                                             <td>{{$key+1}}</td>
-                                            <td>{{$val->tenkhoanchi}}</td>
+                                            <td>{{($val->chitieu)}}</td>
                                             <td>{{number_format($val->giatri)}}</td>
-                                            <td>{{$val->batbuoc}}</td>
                                             <td><button class="btn btn-danger delete"><i class="fe fe-trash"></i></button></td>
                                         </tr>
+                                        <?php $tien+=$val->giatri;?>
                                         @endforeach
+                                        <tr>
+                                        <td colspan="5" style="text-align:center">Số tiền còn lại:{{number_format(($info->thunhap)-$tien)}}</td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -60,20 +64,44 @@
     </script>
     @endif
     <script>
+        // $('.delete').click(function () { 
+        //     var t=$(this).closest('tr').find('input:checkbox').val()
+        //     $.ajax({
+        //         type: "post",
+        //         url: "{{route('delete_kc')}}",
+        //         data: {
+        //             "_token":"{{csrf_token()}}",
+        //             'id':t
+        //         },
+        //         success: function (response) {
+        //             if(response=='ok')
+        //                 location.reload()
+        //         }
+        //     });   
+        // });
         $('.delete').click(function () { 
-            var t=$(this).closest('tr').find('input:checkbox').val()
-            $.ajax({
-                type: "post",
-                url: "{{route('delete_kc')}}",
-                data: {
-                    "_token":"{{csrf_token()}}",
-                    'id':t
-                },
-                success: function (response) {
-                    if(response=='ok')
-                        location.reload()
-                }
-            });   
+            
+            bootbox.confirm("Are you sure?", function(result) {
+                // if(result)
+                // {
+ 
+                //     var t=$(this).closest('tr').find('input:checkbox').val()
+                //     $.ajax({
+                //         type:"post",
+                //         url: "{{route('delete_ct')}}",
+                //         data: {
+                //             "_token":"{{csrf_token()}}",
+                //             'id':t
+                //         },
+                //         success: function (response) {
+                //             if(response=='ok')
+                //                 location.reload()
+                //         }
+
+                //     })
+                // }
+            }); 
+            
         });
     </script>
 @endsection

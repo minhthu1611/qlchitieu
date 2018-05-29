@@ -7,7 +7,7 @@
                     <div class="card">
                         <div class="card-status bg-red"></div>
                         <div class="card-header">
-                            <h3 class="card-title">Thông tin khoản chi</h3>
+                            <h3 class="card-title">Chi tiêu trong ngày</h3>
                             <div class="card-options">
                                 <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
                             </div>
@@ -16,26 +16,17 @@
                             <form action="" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <div class="form-group">
-                                    <label>Tên khoản chi</label>
-                                    <input type="text" class="form-control" name="tenkhoanchi" value="{{old('tenkhoanchi')}}">
-                                    <p class="text-danger">{{$errors->first('tenkhoanchi')}}</p>
+                                    <label>Chi tiêu ngày</label>
+                                    <input type="text" class="form-control" name="chitieungay" value="{{old('chitieungay')}}">
+                                    <p class="text-danger">{{$errors->first('chitieungay')}}</p>
                                 </div>
                                 <div class="form-group">
-                                        <label>Số tiền</label>
-                                        <input type="number" class="form-control" name="sotien" value="{{old('sotien')}}">
-                                        <p class="text-danger">{{$errors->first('sotien')}}</p>
+                                        <label>Giá trị</label>
+                                        <input type="number" class="form-control" name="giatri" value="{{old('giatri')}}">
+                                        <p class="text-danger">{{$errors->first('giatri')}}</p>
                                     </div>
-                                <div class="form-group">
-                                        <div class="custom-switches-stacked">
-                                                <label class="custom-switch">
-                                                    <input type="radio" name="bb" class="custom-switch-input"  checked>
-                                                    <span class="custom-switch-indicator"></span>
-                                                    <span class="custom-switch-description">Băt buộc</span>
-                                                </label>
-                                        </div>
-                                </div>
                                 <div class="text-right">
-                                    <button class="btn btn-primary">Submit</button>
+                                    <button class="btn btn-primary">Thêm</button>
                                 </div>
                             </form>
                             
