@@ -37,6 +37,7 @@ class ChangepasswordRequest extends FormRequest
             'password.required'=>'Mật khẩu mới không được để trống!',
             'password.regex'=>'Mật khẩu mới không được chứa ký tự đặt biệt!',
             'password.min'=>'Mật khẩu mới không được nhỏ hơn 5 ký tự!',
+            'password.confirmed'=>'Nhập lại mật khẩu mới không đúng!',
             'password_confirmation.required'=>'Xác nhận lại mật khẩu mới không được để trống!'
         ];
     }

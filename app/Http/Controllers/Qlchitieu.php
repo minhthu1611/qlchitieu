@@ -267,7 +267,7 @@ class Qlchitieu extends Controller
     }
     public function Post_changepassword(ChangepasswordRequest $request)
     {
-        // $info=user::find(Auth::guard('user')->user()->id);
+        
         if(!Hash::check($request->now_password, Auth::guard('user')->user()->password))
         {
 
