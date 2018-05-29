@@ -16,12 +16,11 @@
     <title>New Điểm Danh</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext">
-    <script src="{{ asset('/assets/js/jquery.min.js') }}"></script>
     <script src="{!! asset('/assets/js/dropzone.js') !!}"></script>
     <script src="{!! asset('/assets/js/require.min.js') !!}"></script>
     <script>
       requirejs.config({
-          baseUrl: '/'
+          baseUrl: '.'
       });
     </script>
     <!-- Dashboard Core -->
@@ -34,41 +33,43 @@
   </head>
   <body>
       <script>
-        $(document).ready( function() {
-            $(document).on('change', '.btn-file :file', function() {
-            var input = $(this),
-                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-            input.trigger('fileselect', [label]);
-            });
-    
-            $('.btn-file :file').on('fileselect', function(event, label) {
-                
-                var input = $(this).parents('.input-group').find(':text'),
-                    log = label;
-                
-                if( input.length ) {
-                    input.val(log);
-                } else {
-                    if( log ) alert(log);
-                }
-            
-            });
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
+        require(['jquery'],function(){
+            $(document).ready( function() {
+                $(document).on('change', '.btn-file :file', function() {
+                var input = $(this),
+                    label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+                input.trigger('fileselect', [label]);
+                });
+        
+                $('.btn-file :file').on('fileselect', function(event, label) {
                     
-                    reader.onload = function (e) {
-                        $('#img-upload').attr('src', e.target.result);
+                    var input = $(this).parents('.input-group').find(':text'),
+                        log = label;
+                    
+                    if( input.length ) {
+                        input.val(log);
+                    } else {
+                        if( log ) alert(log);
                     }
-                    
-                    reader.readAsDataURL(input.files[0]);
+                
+                });
+                function readURL(input) {
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+                        
+                        reader.onload = function (e) {
+                            $('#img-upload').attr('src', e.target.result);
+                        }
+                        
+                        reader.readAsDataURL(input.files[0]);
+                    }
                 }
-            }
-    
-            $("#imgInp").change(function(){
-                readURL(this);
-            }); 	
-        });
+        
+                $("#imgInp").change(function(){
+                    readURL(this);
+                }); 	
+            });
+        })
     </script>
   @include('header')
     <div class="d-flex">
@@ -78,11 +79,13 @@
     </div>
   </body>
   <script type="text/javascript">
-     $(document).ready(function () {
-         $('#sidebarCollapse').on('click', function () {
-             $('#sidebar').toggleClass('active');
-         });
-     });
+     require(['jquery'],function(){
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+     })
      
  </script>
 </html>
