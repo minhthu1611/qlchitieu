@@ -15,13 +15,13 @@
             <a href="{{route('admin/user')}}"><i class="fe fe-user"></i> Người dùng</a>
         </li>
         @else
-        <li>
-        <a href="{{route('trangchu')}}"> Home</a>
+        <li @if(Request::segment(1)=='trangchu') class='active' @endif>
+        <a href="{{route('trangchu')}}">Home</a>
         </li>
         @endif
         <li @if(Request::segment(1)=='khoan-chi-bat-buoc') class='active' @endif>
             <a href="#khoanchibatbuoc" data-toggle="collapse" aria-expanded="false"><i class="fe fe-eye"></i> Khoản chi bắt buộc<i class="dropdown-toggle float-right"></i></a>
-                    <ul @if(Request::segment(1)=='khoan-chi-bat-buoc') @else  class="collapse list-unstyled" @endif  id="khoanchibatbuoc">
+                    <ul @if(Request::segment(2)=='themkhoanchi'||Request::segment(2)=='danh-sach-khoan-chi') class="collapsed list-unstyled" @endif class="collapse list-unstyled" id="khoanchibatbuoc">
                             <li @if(Request::segment(2)=='themkhoanchi') class='active' @endif >
                                     <a  href="{{route('gtkc')}}"><i class="fe fe-airplay"></i> Thêm khoản chi</a>
                             </li>
@@ -33,7 +33,7 @@
         <li>
         <li @if(Request::segment(1)=='chi-tieu') class='active' @endif>
                 <a href="#chitieu" data-toggle="collapse" aria-expanded="false"><i class="fe fe-eye"></i> Chi tiêu trong ngày<i class="dropdown-toggle float-right"></i></a>
-                <ul @if(Request::segment(1)=='chi-tieu') @else  class="collapse list-unstyled" @endif  id="chitieu" >
+                <ul @if(Request::segment(2)=='them-chi-tieu-ngay'||Request::segment(2)=='thong-ke-chi-tieu') class="collapsed list-unstyled" @endif class="collapse list-unstyled"  id="chitieu" >
 
                     <li @if(Request::segment(2)=='them-chi-tieu-ngay') class='active' @endif>
                         <a href="{{route('ctn')}}">Thêm chi tiêu</a>
@@ -47,7 +47,6 @@
             <a href="#quanly" data-toggle="collapse" aria-expanded="false"><i class="fe fe-eye"></i> Thống kê<i class="dropdown-toggle float-right"></i></a>
             <ul class="collapse list-unstyled" id="quanly">
                 <li><a href="#">Số tiền còn được sử dụng trong tháng</a></li>
-                <li><a href="#"></a></li>
                 <li><a href="#">Quản lý 3</a></li>
             </ul>
         </li>
