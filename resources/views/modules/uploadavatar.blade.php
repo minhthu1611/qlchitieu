@@ -61,7 +61,11 @@
 					</div>
 					<div class="card-body">
 						<div class="img-detection">
+							@if(Auth::guard('user')->user()->avatar!='')
 							<img class="rounded"  id='img-upload' width="100%" src="{{asset('/avatar/'.Auth::guard('user')->user()->avatar)}}" alt="">
+							@else
+							<img class="rounded"  id='img-upload' width="100%" src="{{asset('/avatar/photo.jpg')}}" alt="">
+							@endif
 						</div>
 					</div>
 				</div>
