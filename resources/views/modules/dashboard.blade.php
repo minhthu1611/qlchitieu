@@ -8,7 +8,7 @@
                         <div class="card-header justify-content-end">
                                 <form action="" method="get" id="myform">
                                         <div class="input-group justify-content-end">
-                                            <input type="text" name="query" class="form-control" placeholder="Tìm kiếm...">           
+                                            <input type="number" name="query" class="form-control" placeholder="Tìm kiếm...">           
                                             <span class="input-group-append">
                                                 <button class="btn btn-danger sub" type="submit"><i class="fe fe-search"></i></button>
                                             </span>                         
@@ -17,28 +17,28 @@
                         </div>
                     </div>
                 </div>
-                @for($i=0; $i<20 ; $i++)
+               @foreach($data as $value)
                 <div class="col-lg-3">
                     <div class="card">
                         <div class="card-body">
                             <div class="product-image mb-4 text-center">
-                                <img src="/avatar/rau.jpg" alt="">
+                                <img src="https://nongsancairang.com/upload/sanpham/{{$value->images}}" alt="">
                             </div>
-                            <h3 class="card-title"><a href="#">Sản phẩm</a></h3>
+                            <h3 class="card-title"><a href="https://nongsancairang.com/san-pham/{{$value->id}}">{{$value->tensanpham}}</a></h3>
 
                             <div class="d-flex mt-5 align-items-center flex-row">
                                 <div class="product-price">
-                                    <strong>690000đ</strong>
+                                    <strong>{{number_format($value->gia)}} đ</strong>
                                 </div>
                                 <div class="ml-auto">
-                                    <a href="#" class="btn btn-danger"><i class="fe fe-shopping-cart"></i> Đặt hàng</a>
+                                    <a href="https://nongsancairang.com/san-pham/{{$value->id}}" class="btn btn-danger"><i class="fe fe-shopping-cart"></i> Đặt hàng</a>
                                 </div>
                             </div>
-                            <p class="mt-3" style="color:#ccc; font-size:13px;">Product from nongsancairang.com</p>
+                            <p class="mt-3" style="color:green; font-size:13px; font-weight:bold;">Product from nongsancairang.com</p>
                         </div>
                     </div>
                 </div>
-                @endfor
+                @endforeach
             </div>
         </div>
     </div>

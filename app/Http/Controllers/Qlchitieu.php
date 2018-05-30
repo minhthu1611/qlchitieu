@@ -42,9 +42,22 @@ class Qlchitieu extends Controller
 			}
     }
 
-    public function Get_trangchu()
+    public function Get_trangchu(Request $request)
     {
-        return view('modules.dashboard');
+        if($request->get('query') && $request->get('query')!='')
+        {
+            $client = new \GuzzleHttp\Client();
+            $res = $client->request('GET', 'https://nongsancairang.com/api/product/'.$request->get('query'));
+            $data= json_decode($res->getBody());
+        }
+        else
+        {
+            $client = new \GuzzleHttp\Client();
+            $res = $client->request('GET', 'https://nongsancairang.com/api/product/100000');
+           $data= json_decode($res->getBody());
+        }
+       
+        return view('modules.dashboard',compact('data'));
     }
     
 
@@ -191,12 +204,6 @@ class Qlchitieu extends Controller
     
         $money_can_use=$info->thunhap-$money;
         return view('modules.thongkechitieu',compact('data','info','money_can_use'));
-    }
-    public function Get_api($id)
-    {
-        $client = new \GuzzleHttp\Client();
-        $res = $client->request('GET', 'http://phongkinhtecairang.com/api/fuck/'.$id);
-        echo $res->getBody();
     }
     public function Post_ajax_delete_kc(Request $request)
     {
