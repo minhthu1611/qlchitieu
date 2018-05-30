@@ -22,7 +22,7 @@
                                 </div>
                                 <div class="form-group">
                                         <label>Số tiền</label>
-                                        <input type="number" class="form-control" name="sotien" value="{{old('sotien')}}">
+                                        <input type="money" class="form-control" name="sotien" id="sotien" value="{{old('sotien')}}">
                                         <p class="text-danger">{{$errors->first('sotien')}}</p>
                                     </div>
                                 <div class="form-group">
@@ -57,4 +57,25 @@
         mess('error',"{{Session::get('message')}}")
     </script>
     @endif
+    {{-- <script>
+        function addCommas(nStr)
+        {
+            nStr += '';
+            x = nStr.split('.');
+            x1 = x[0];
+            x2 = x.length > 1 ? '.' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            }
+            return x1 + x2;
+        }
+        $('#sotien').keyup(function (e) { 
+            var t=this.value.replace(/[,]/g,'');
+           
+            var k=addCommas(t)
+          
+           $(this).val(addCommas(k))
+        });
+    </script> --}}
 @endsection

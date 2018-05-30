@@ -321,6 +321,25 @@ class Qlchitieu extends Controller
         }
     }
     
-    //Đồ nhu nhược dìa làm update pass
-    //em làm hàm update password ở trong cái else. nhớ mã hóa kieu bcrypt
+    public function Get_save_money(Request $request)
+    {
+        $thunhap=(user::find(Auth::guard('user')->user()->id))->thunhap;
+
+        if($request->get('query') && $request->get('query')!='')
+        {
+            $chitieu=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('created_at','like','%'.$request->get('query').'%')->sum('giatri');
+            $chibatbuoc=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('created_at','like','%'.$request->get('query').'%')->sum('giatri');
+            $money_used=$chibatbuoc+$chitieu;
+            $money_saved=$thunhap-$money_used;
+        }
+       else
+        {
+            $chitieu=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('created_at','like','%'.date('Y-m').'%')->sum('giatri');
+            $chibatbuoc=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('created_at','like','%'.date('Y-m').'%')->sum('giatri');
+            $money_used=$chibatbuoc+$chitieu;
+            $money_saved=$thunhap-$money_used;
+        }
+        // return $money_saved;
+        return view('modules.save-money',compact('money_saved'));
+    }
 }

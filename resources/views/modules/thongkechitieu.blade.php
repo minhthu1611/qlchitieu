@@ -51,7 +51,8 @@
                                         @endforeach
                                         <tr>
                                         <td colspan="5" style="text-align:center">Số tiền còn lại:{{number_format(($money_can_use)-$tien)}}
-                                            @if($money_can_use-$tien<0)
+                                            <?php $money_saved=$money_can_use-$tien;?>
+                                            @if($money_saved<0)
                                                 <p ><h1 class='text-danger'>Bạn đã bị viêm màng túi!<h1></p>
                                             @endif
                                         </td>
@@ -71,8 +72,6 @@
     </script>
     @endif
     <script>
-
-     
             $('.delete').click(function () { 
                 var t=$(this).closest('tr').find('input:checkbox').val()
                 bootbox.confirm({ 
@@ -92,7 +91,6 @@
                                     if(response=='ok')
                                         location.reload()
                                 }
-
                             })
                         }
                         
@@ -102,8 +100,7 @@
         $('.delete-all').click(function (e) { 
             var id=[]
             $('input[name="cc"]:checked').each(function() {
-                id.push(this.value)
-                
+                id.push(this.value)  
             });
             bootbox.confirm({ 
                     size: "small",
@@ -133,5 +130,19 @@
                     }   
                 })     
         });
+        function addCommas(nStr)
+        {
+            nStr += '';
+            x = nStr.split('.');
+            x1 = x[0];
+            x2 = x.length > 1 ? '.' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            }
+            return x1 + x2;
+        }
+        console.log(addCommas('10000'))
+
     </script>
 @endsection

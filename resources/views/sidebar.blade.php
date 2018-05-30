@@ -50,7 +50,7 @@
             </ul>
         </li>
         <li>
-        <a href="{{route('logout')}}"><i class="fe fe-power"></i> Đăng xuất</a>
+        <a href="{{route('gsave-money')}}"><i class=""></i> Tiền dành dụm</a>
         </li>
     </ul>
 </nav>

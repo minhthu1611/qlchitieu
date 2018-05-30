@@ -44,8 +44,9 @@ Route::group(['middleware' => ['admincheck:1']], function () {
 
         Route::post('delete_nct',['as'=>'delete_nct','uses'=>'Qlchitieu@Post_ajax_delete_nct']);
     });
-   
+    Route::get('save-money',['as'=>'gsave-money','uses'=>'Qlchitieu@Get_save_money']);
 });
+
 Route::get('check',function(){
     return view('check');
 });
