@@ -26,7 +26,7 @@
                         </div>
                         <div class="card-body">
                                 <div class="form-group">
-                                    <label>Username</label>
+                                    <label>Email</label>
                                     <input type="text" class="form-control" name="username">
                                     <p class='text-danger'> {{$errors->first('username') }}</p>
                                 </div>

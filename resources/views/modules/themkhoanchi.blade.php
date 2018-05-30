@@ -29,13 +29,13 @@
                                         <div class="custom-switches-stacked">
                                                 <label class="custom-switch">
                                                     <input type="radio" name="bb" class="custom-switch-input"  checked>
-                                                    <span class="custom-switch-indicator"></span>
+                                                    <span class="custom-switch-indicator bg-red"></span>
                                                     <span class="custom-switch-description">Băt buộc</span>
                                                 </label>
                                         </div>
                                 </div>
                                 <div class="text-right">
-                                    <button class="btn btn-primary">Submit</button>
+                                    <button class="btn btn-danger">Submit</button>
                                 </div>
                             </form>
                             

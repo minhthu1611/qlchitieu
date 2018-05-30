@@ -37,7 +37,7 @@
                                         @foreach($data as $key=>$val)
                                         <tr>
                                             <td>
-                                                <label class="custom-control custom-checkbox ml-3">
+                                                <label class="custom-control custom-checkbox" style="margin-left:-10px;">
                                                     <input type="checkbox" class="custom-control-input" name="qq" value="{{$val->id}}" >
                                                     <span class="custom-control-label">&nbsp</span>
                                                 </label>

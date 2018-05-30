@@ -26,7 +26,7 @@
                                         <p class="text-danger">{{$errors->first('giatri')}}</p>
                                     </div>
                                 <div class="text-right">
-                                    <button class="btn btn-primary">Thêm</button>
+                                    <button class="btn btn-danger">Thêm</button>
                                 </div>
                             </form>
                             
