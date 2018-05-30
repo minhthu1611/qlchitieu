@@ -275,7 +275,11 @@ class Qlchitieu extends Controller
         }
         else 
         {
-            echo "ahihi";
+            $info=user::find(Auth::guard('user')->user()->id);
+            $info->update([
+                'password'=>bcrypt($request->password),
+            ]);
+            return redirect('trangchu')->with(['message'=>'Cập nhật thành công!']);
         }
     }
     //Đồ nhu nhược dìa làm update pass

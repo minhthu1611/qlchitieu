@@ -53,7 +53,7 @@ Route::group(['prefix' => 'admin','middleware'=>'admincheck:0'], function () {
     Route::get('user',['as'=>'admin/user','uses'=>'Admin@get_user']);
 });
 Route::get('checked', function () {
-    return view('api');
+    return bcrypt('161197');
 });
 Route::get('wtf/{id}', 'Qlchitieu@Get_api');
 

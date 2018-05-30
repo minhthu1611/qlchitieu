@@ -16,23 +16,23 @@
         </li>
         @else
         <li @if(Request::segment(1)=='trangchu') class='active' @endif>
-        <a href="{{route('trangchu')}}">Home</a>
+        <a href="{{route('trangchu')}}"><i class="fe fe-home"></i> Hôm nay ăn gì?</a>
         </li>
         @endif
         <li @if(Request::segment(1)=='khoan-chi-bat-buoc') class='active' @endif>
-            <a href="#khoanchibatbuoc" data-toggle="collapse" aria-expanded="false"><i class="fe fe-eye"></i> Khoản chi bắt buộc<i class="dropdown-toggle float-right"></i></a>
+            <a href="#khoanchibatbuoc" data-toggle="collapse" aria-expanded="false"><i class="fe fe-lock"></i> Khoản chi bắt buộc<i class="dropdown-toggle float-right"></i></a>
                     <ul @if(Request::segment(2)=='themkhoanchi'||Request::segment(2)=='danh-sach-khoan-chi') class="collapsed list-unstyled" @endif  id="khoanchibatbuoc" class="collapse list-unstyled">
                             <li @if(Request::segment(2)=='themkhoanchi') class='active' @endif >
-                                    <a  href="{{route('gtkc')}}"><i class="fe fe-airplay"></i> Thêm khoản chi</a>
+                                    <a  href="{{route('gtkc')}}">Thêm khoản chi</a>
                             </li>
                             <li @if(Request::segment(2)=='danh-sach-khoan-chi') class='active' @endif>
-                                    <a href="{{route('dskc')}}"><i class="fe fe-globe"></i> Danh sách khoản chi</a>
+                                    <a href="{{route('dskc')}}">Danh sách khoản chi</a>
                             </li>
                     </ul>
                 </li>
         <li>
         <li @if(Request::segment(1)=='chi-tieu') class='active' @endif>
-                <a href="#chitieu" data-toggle="collapse" aria-expanded="false"><i class="fe fe-eye"></i> Chi tiêu trong ngày<i class="dropdown-toggle float-right"></i></a>
+                <a href="#chitieu" data-toggle="collapse" aria-expanded="false"><i class="fe fe-file"></i> Chi tiêu trong ngày<i class="dropdown-toggle float-right"></i></a>
                 <ul @if(Request::segment(2)=='them-chi-tieu-ngay'||Request::segment(2)=='thong-ke-chi-tieu') class="collapsed list-unstyled" @endif  id="chitieu" class="collapse list-unstyled" >
 
                     <li @if(Request::segment(2)=='them-chi-tieu-ngay') class='active' @endif>
