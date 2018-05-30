@@ -282,6 +282,38 @@ class Qlchitieu extends Controller
             return redirect('trangchu')->with(['message'=>'Cập nhật thành công!']);
         }
     }
+    public function Post_ajax_delete_user(Request $request)
+    {
+        if($request->ajax())
+        {
+            try
+            {
+                user::find($request->id)->delete();
+                return 'ok';
+            }
+            catch(\Illuminate\Database\QueryException $ex){ 
+               return 'error';
+            }
+           
+        }
+    }
+
+    public function Post_ajax_delete_nuser(Request $request)
+    {
+        if($request->ajax())
+        {
+            try
+            {
+                user::whereIn('id',$request->id)->delete();
+                return 'ok';
+            }
+            catch(\Illuminate\Database\QueryException $ex){ 
+               return 'error';
+            }
+           
+        }
+    }
+    
     //Đồ nhu nhược dìa làm update pass
     //em làm hàm update password ở trong cái else. nhớ mã hóa kieu bcrypt
 }

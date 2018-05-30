@@ -51,6 +51,9 @@ Route::get('check',function(){
 });
 Route::group(['prefix' => 'admin','middleware'=>'admincheck:0'], function () {
     Route::get('user',['as'=>'admin/user','uses'=>'Admin@get_user']);
+
+    Route::post('delete_user',['as'=>'delete_user','uses'=>'Qlchitieu@Post_ajax_delete_user']);
+    Route::post('delete_nuser',['as'=>'delete_nuser','uses'=>'Qlchitieu@Post_ajax_delete_nuser']);
 });
 Route::get('checked', function () {
     return bcrypt('161197');

@@ -14,11 +14,10 @@
         <li @if(Request::segment(2)=='user') class='active' @endif>
             <a href="{{route('admin/user')}}"><i class="fe fe-user"></i> Người dùng</a>
         </li>
-        @else
+        @endif
         <li @if(Request::segment(1)=='trangchu') class='active' @endif>
         <a href="{{route('trangchu')}}"><i class="fe fe-home"></i> Hôm nay ăn gì?</a>
         </li>
-        @endif
         <li @if(Request::segment(1)=='khoan-chi-bat-buoc') class='active' @endif>
             <a href="#khoanchibatbuoc" data-toggle="collapse" aria-expanded="false"><i class="fe fe-lock"></i> Khoản chi bắt buộc<i class="dropdown-toggle float-right"></i></a>
                     <ul @if(Request::segment(2)=='themkhoanchi'||Request::segment(2)=='danh-sach-khoan-chi') class="collapsed list-unstyled" @endif  id="khoanchibatbuoc" class="collapse list-unstyled">
