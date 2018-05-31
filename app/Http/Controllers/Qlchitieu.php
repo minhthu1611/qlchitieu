@@ -323,25 +323,50 @@ class Qlchitieu extends Controller
         }
     }
     
-    public function Get_save_money(Request $request)
+    public function Get_money_used(Request $request)
     {
-        $thunhap=(user::find(Auth::guard('user')->user()->id))->thunhap;
+            $chihangthang=[];
+            if($request->get('query') && $request->get('query')!=''){
+                $chitieu=chitieungay::where('user_id',Auth::guard('user')->user()->id)
+                ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->get();
+                $chibatbuoc=khoanchi::where('user_id',Auth::guard('user')->user()->id)
+                ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->get();
+            }
+            else{
+                $date=[];
+                for($i=0;$i<=6;$i++)
+                {
+                    $date[]=date("Y-m",mktime(0,0,0,date('m')-$i,date('d'),date('Y')));
+                }
+                $chitieu=chitieungay::where('user_id',Auth::guard('user')->user()->id)
+                ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->get();
+                $chibatbuoc=khoanchi::where('user_id',Auth::guard('user')->user()->id)
+                ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->get();
+           
 
-        if($request->get('query') && $request->get('query')!='')
-        {
-            $chitieu=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('created_at','like','%'.$request->get('query').'%')->sum('giatri');
-            $chibatbuoc=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('created_at','like','%'.$request->get('query').'%')->sum('giatri');
-            $money_used=$chibatbuoc+$chitieu;
-            $money_saved=$thunhap-$money_used;
-        }
-       else
-        {
-            $chitieu=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('created_at','like','%'.date('Y-m').'%')->sum('giatri');
-            $chibatbuoc=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('created_at','like','%'.date('Y-m').'%')->sum('giatri');
-            $money_used=$chibatbuoc+$chitieu;
-            $money_saved=$thunhap-$money_used;
-        }
-        // return $money_saved;
-        return view('modules.save-money',compact('money_saved'));
+                    foreach($chibatbuoc as $cbb){
+
+                        $chihangthang[]=['ngaythang'=>$cbb->ngaythang,'tongchi'=>$cbb->sotien];
+                    }
+                    foreach($chitieu as $ct){
+                        $t=-1;
+                        foreach($chihangthang as $key=> $k){
+                            if($ct->ngaythang==$k['ngaythang']){
+                                $t=$key;
+                                break;
+                            }
+                            
+                        }
+                        if($t>-1){
+                            $chihangthang[$t]['tongchi']= intval($chihangthang[$t]['tongchi'])+intval($ct->sotien);
+                        }
+                        else{
+                            $chihangthang[]=['ngaythang'=>$ct->ngaythang,'tongchi'=>$ct->sotien];
+                        }
+                    }
+            }
+            
+       
+            return view('modules.money_used',compact('chihangthang'));
     }
 }

@@ -24,27 +24,23 @@
                                         <tr class="bg-red">
                                             <th>Stt</th>
                                             <th>Tháng</th>
-                                            <th>Tiền dành dụm</th>
+                                            <th>Tổng chi tiêu hàng tháng</th>
                                             <th>***</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         
-                                        {{-- @foreach($data as $key=>$val) --}}
+                                        @foreach($chihangthang as $key=>$val)
                                         <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td>{{$key+1}}</td>
+                                            <td>{{$val['ngaythang']}}</td>
+                                            <td>{{$val['tongchi']}}</td>
                                             <td></td>
                                         </tr>
                                         <?php ?>
-                                        {{-- @endforeach --}}
+                                        @endforeach
                                         <tr>
-                                        <td colspan="5" style="text-align:center">Số tiền bạn đã chắt chiu dành dụm được:{{number_format(($money_saved))}}
-                                            {{-- @if($money_can_use-$tien<0)
-                                                <p ><h1 class='text-danger'>Bạn đã bị viêm màng túi!<h1></p>
-                                            @endif --}}
-                                        </td>
+                                       
                                         </tr>
                                     </tbody>
                                 </table>

@@ -42,15 +42,8 @@
                     </li>
                 </ul>
             </li>
-        <li @if(Request::segment(1)=='edit'||Request::segment(1)=='changepassword') class='active' @endif>
-            <a href="#taikhoan" data-toggle="collapse" aria-expanded="false"><i class="fe fe-eye"></i>Tài khoản<i class="dropdown-toggle float-right"></i></a>
-            <ul @if(Request::segment(1)=='edit' ||Request::segment(1)=='changepassword') class="collapsed list-unstyled" @endif class="collapse list-unstyled" id="taikhoan">
-                <li @if(Request::segment(1)=='edit' ) class='active' @endif ><a href="{{route('edit')}}">Cập nhật thông tin</a></li>
-                <li @if(Request::segment(1)=='changepassword') class='active' @endif ><a href="{{route('changepassword')}}">Đổi mật khẩu</a></li>
-            </ul>
-        </li>
         <li>
-        <a href="{{route('gsave-money')}}"><i class=""></i> Tiền dành dụm</a>
+        <a href="{{route('gmoney-used')}}"><i class=""></i> Tổng chi tiêu</a>
         </li>
     </ul>
 </nav>
