@@ -28,6 +28,7 @@
                                             <th>Stt</th>
                                             <th>Chi tiêu ngày</th>
                                             <th>Giá trị</th>
+                                            <th>Tháng năm</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -45,6 +46,7 @@
                                             <td>{{$key+1}}</td>
                                             <td>{{($val->chitieu)}}</td>
                                             <td>{{number_format($val->giatri)}}</td>
+                                            <td>{{$val->ngaythang}}</td>
                                             <td><button class="btn btn-danger delete"><i class="fe fe-trash"></i></button></td>
                                         </tr>
                                         <?php $tien+=$val->giatri;?>

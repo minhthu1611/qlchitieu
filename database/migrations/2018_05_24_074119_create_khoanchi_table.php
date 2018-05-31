@@ -18,6 +18,7 @@ class CreateKhoanchiTable extends Migration
             $table->string('tenkhoanchi');
             $table->double('giatri');
             $table->tinyInteger('batbuoc')->default(0);
+            $table->string('ngaythang');
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')
             ->references('id')->on('user')
