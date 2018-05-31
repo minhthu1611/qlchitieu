@@ -17,6 +17,7 @@ class CreateChitieungayTable extends Migration
             $table->increments('id');
             $table->string('chitieu');
             $table->double('giatri');
+            $table->string('ngaythang');
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')
             ->references('id')->on('user')

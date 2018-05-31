@@ -8,7 +8,7 @@ class chitieungay extends Model
 {
     //
     protected $table='chitieungay';
-	protected $fillable=['id','chitieu','giatri','user_id','created_at','updated_at'];
+	protected $fillable=['id','chitieu','giatri','ngaythang','user_id','created_at','updated_at'];
 	public $timestamps = true;
 	public function user()
     {

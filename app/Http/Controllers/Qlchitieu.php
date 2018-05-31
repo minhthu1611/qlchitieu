@@ -142,6 +142,7 @@ class Qlchitieu extends Controller
                     'tenkhoanchi'=> $request->tenkhoanchi,
                     'giatri'=>$request->sotien,
                     'batbuoc'=>1,
+                    'ngaythang'=>date('Y-m'),
                     'user_id'=>$user_id,
                     'created_at'=>Carbon::now()
                 ]);
@@ -177,6 +178,7 @@ class Qlchitieu extends Controller
                 chitieungay::insert([
                     'chitieu'=> $request->chitieungay,
                     'giatri'=>$request->giatri,
+                    'ngaythang'=>date('Y-m'),
                     'user_id'=>$data->id,
                     'created_at'=>Carbon::now()
                 ]);

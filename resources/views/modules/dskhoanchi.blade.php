@@ -28,6 +28,7 @@
                                             <th>Stt</th>
                                             <th>Tên khoản chi</th>
                                             <th>Số tiền</th>
+                                            <th>Tháng năm</th>
                                             <th>Bắt buộc</th>
                                             <th></th>
                                         </tr>
@@ -45,6 +46,7 @@
                                             <td>{{$key+1}}</td>
                                             <td>{{$val->tenkhoanchi}}</td>
                                             <td>{{number_format($val->giatri)}}</td>
+                                            <td>{{$val->ngaythang}}</td>
                                             <td>{{$val->batbuoc}}</td>
                                             <td><button class="btn btn-danger delete"><i class="fe fe-trash"></i></button></td>
                                         </tr>
