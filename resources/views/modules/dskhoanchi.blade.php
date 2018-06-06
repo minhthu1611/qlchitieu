@@ -9,13 +9,20 @@
                         <div class="card-header">
                             <form action="" method="get" id="myform">
                                     <div class="input-group justify-content-end">
-                                     
-                                        <input type="text" name="query" class="form-control" placeholder="Tìm kiếm...">
-                                       
+                                        <select name="query" id="query" class="form-control">
+                                            <option value="">--Thời điểm--</option>
+                                            <option value="2018-01">01-2018</option>
+                                            <option value="2018-02">02-2018</option>
+                                            <option value="2018-03">03-2018</option>
+                                            <option value="2018-04">04-2018</option>
+                                            <option value="2018-05">05-2018</option>
+                                            <option value="2018-06">06-2018</option>
+                                        </select>
+                                        {{-- <input type="text" name="query" class="form-control" placeholder="Tìm kiếm...">
                                         <span class="input-group-append">
                                             <button class="btn btn-danger sub" type="submit"><i class="fe fe-search"></i></button>
-                                        </span>
-                                 
+                                        </span> --}}
+                                    
                                     </div>
                             </form>
                         </div>
@@ -129,9 +136,10 @@
                     }   
                 })     
         });    
-        // $('.sub').click(function (e) { 
-        //   $('#myform').submit()
-            
-        // });
+        $('#query').change(function () { 
+                var qq=$(this).val()
+                location.href='{{route("dskc")}}?query='+qq
+                console.log(qq)
+        });
     </script>
 @endsection

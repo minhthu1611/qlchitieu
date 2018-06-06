@@ -42,8 +42,21 @@
                     </li>
                 </ul>
             </li>
+        <li @if(Request::segment(1)=='thu-nhap-phat-sinh') class='active' @endif>
+                <a href="#thunhapps" data-toggle="collapse" aria-expanded="false"><i class="fe fe-file"></i>Thu nhập phát sinh<i class="dropdown-toggle float-right"></i></a>
+                <ul @if(Request::segment(2)=='them-thu-nhap'||Request::segment(2)=='thong-ke-thu-nhap') class="collapsed list-unstyled" @endif  id="thunhapps" class="collapse list-unstyled" >
+
+                    <li @if(Request::segment(2)=='them-thu-nhap') class='active' @endif>
+                        <a href="{{route('gtnps')}}"><i class=""></i> Thêm thu nhập</a>
+                    </li>
+                    <li @if(Request::segment(2)=='thong-ke-thu-nhap') class='active' @endif>
+                        <a href="{{route('tktn')}}">Thống kê thu nhập</a>
+                    </li>
+                </ul>
+            </li>
         <li>
-        <a href="{{route('gmoney-used')}}"><i class=""></i> Tổng chi tiêu</a>
+        <li>
+            <a href="{{route('gmoney-used')}}"><i class=""></i> Tổng chi tiêu</a>
         </li>
     </ul>
 </nav>

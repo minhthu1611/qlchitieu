@@ -22,7 +22,6 @@
                                             <span class="input-group-append">
                                                 <button class="btn btn-danger sub" type="submit"><i class="fe fe-search"></i></button>
                                             </span> --}}
-                                     
                                         </div>
                                 </form>
                         </div>
@@ -33,16 +32,15 @@
                                         <tr class="bg-red">
                                             <th><button class="btn btn-danger delete-all"><i class="fe fe-trash"></i></button></th>
                                             <th>Stt</th>
-                                            <th>Chi tiêu ngày</th>
+                                            <th>Thu nhập phát sinh</th>
                                             <th>Giá trị</th>
                                             <th>Tháng năm</th>
                                             <th></th>
                                         </tr>
                                     </thead>
+                                    <?php $tongthunhap=0?>
                                     <tbody>
-                                        <?php $tien=0 ?>
                                         @foreach($data as $key=>$val)
-                                     
                                         <tr>
                                             <td>
                                                 <label class="custom-control custom-checkbox" style="margin-left:-10px;">
@@ -51,20 +49,17 @@
                                                 </label>
                                             </td>
                                             <td>{{$key+1}}</td>
-                                            <td>{{($val->chitieu)}}</td>
+                                            <td>{{($val->tenthunhap)}}</td>
                                             <td>{{number_format($val->giatri)}}</td>
                                             <td>{{$val->ngaythang}}</td>
                                             <td><button class="btn btn-danger delete"><i class="fe fe-trash"></i></button></td>
                                         </tr>
-                                        <?php $tien+=$val->giatri;?>
+                                        <?php $tongthunhap+=$val->giatri?>
                                         @endforeach
                                         <tr>
-                                        <td colspan="5" style="text-align:center">Số tiền còn lại:{{number_format(($money_can_use)-$tien)}}
-                                            <?php $money_saved=$money_can_use-$tien;?>
-                                            @if($money_saved<0)
-                                                <p ><h1 class='text-danger'>Bạn đã bị viêm màng túi!<h1></p>
-                                            @endif
-                                        </td>
+                                            <td colspan="6" style="text-align:center">
+                                                Tổng thu nhập của bạn: :{{number_format($tongthunhap)}}
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -91,7 +86,7 @@
                         {
                             $.ajax({
                                 type:"post",
-                                url: "{{route('delete_ct')}}",
+                                url: "{{route('delete_tn')}}",
                                 data: {
                                     "_token":"{{csrf_token()}}",
                                     'id':t
@@ -105,43 +100,43 @@
                         
                     }   
                 })    
+        });
+        $('.delete-all').click(function (e) { 
+            var id=[]
+            $('input[name="cc"]:checked').each(function() {
+                id.push(this.value)  
             });
-            $('.delete-all').click(function (e) { 
-                var id=[]
-                $('input[name="cc"]:checked').each(function() {
-                    id.push(this.value)  
-                });
-                bootbox.confirm({ 
-                        size: "small",
-                        message: "Are you sure?", 
-                        callback: function(result){ 
-                            if(result)
-                            {
-                                $.ajax({
-                                    type: "post",
-                                    url: "{{route('delete_nct')}}",
-                                    data: {
-                                        '_token':'{{csrf_token()}}',
-                                        'id':id
-                                    },
-                                    success: function (response) {
-                                        if(response=='ok')
-                                            location.reload()
-                                    }
-                                });
-                            }
-                            else
-                            {
-                                $('input[name="cc"]:checked').each(function() {
-                                $(this).prop('checked',false)
-                                });
-                            }   
+            bootbox.confirm({ 
+                    size: "small",
+                    message: "Are you sure?", 
+                    callback: function(result){ 
+                        if(result)
+                        {
+                            $.ajax({
+                                type: "post",
+                                url: "{{route('delete_ntn')}}",
+                                data: {
+                                    '_token':'{{csrf_token()}}',
+                                    'id':id
+                                },
+                                success: function (response) {
+                                    if(response=='ok')
+                                        location.reload()
+                                }
+                            });
+                        }
+                        else
+                        {
+                            $('input[name="cc"]:checked').each(function() {
+                               $(this).prop('checked',false)
+                            });
                         }   
-                    })     
-            });
-            $('#query').change(function () { 
+                    }   
+                })     
+        });
+        $('#query').change(function () { 
                 var qq=$(this).val()
-                location.href='{{route("tkct")}}?query='+qq
+                location.href='{{route("tktn")}}?query='+qq
                 console.log(qq)
             });
     </script>

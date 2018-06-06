@@ -8,11 +8,13 @@ use App\Http\Requests\DangkyRequest;
 use App\Http\Requests\EditRequest;
 use App\Http\Requests\KhoanchiRequest;
 use App\Http\Requests\ChitieuRequest;
+use App\Http\Requests\ThunhapRequest;
 use App\Http\Requests\ChangepasswordRequest;
 
 use App\models\user;
 use App\models\khoanchi;
 use App\models\chitieungay;
+use App\models\thunhapps;
 use Auth;
 use Validator;
 use GuzzleHttp\Client;
@@ -156,9 +158,13 @@ class Qlchitieu extends Controller
     }
 
 
-    public function Get_dskhoanchi()
+    public function Get_dskhoanchi(Request $request)
     {
-        $data=khoanchi::where('user_id',Auth::guard('user')->user()->id)->get();
+        if($request->get('query') && $request->get('query')!=''){
+            $data=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.$request->get('query').'%')->get();
+        }
+        else
+            $data=khoanchi::where('user_id',Auth::guard('user')->user()->id)->get();
         return view('modules.dskhoanchi',compact('data'));
     }
 
@@ -193,18 +199,20 @@ class Qlchitieu extends Controller
     {
        if($request->get('query') && $request->get('query')!='')
        {
-            $data=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('created_at','like','%'.$request->get('query').'%')->get();
-            $money=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('created_at','like','%'.$request->get('query').'%')->sum('giatri');
+            $tnps=thunhapps::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.$request->get('query').'%')->sum('giatri');
+            $data=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.$request->get('query').'%')->get();
+            $money=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.$request->get('query').'%')->sum('giatri');
        }
        else
        {
-            $data=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('created_at','like','%'.date("Y-m").'%')->get();
-            $money=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('created_at','like','%'.date("Y-m").'%')->sum('giatri');
+            $tnps=thunhapps::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.date("Y-m").'%')->sum('giatri');
+            $data=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.date("Y-m").'%')->get();
+            $money=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.date("Y-m").'%')->sum('giatri');
        }
         
         $info=user::find(Auth::guard('user')->user()->id);
     
-        $money_can_use=$info->thunhap-$money;
+        $money_can_use=$info->thunhap+$tnps-$money;
         return view('modules.thongkechitieu',compact('data','info','money_can_use'));
     }
     public function Post_ajax_delete_kc(Request $request)
@@ -368,5 +376,62 @@ class Qlchitieu extends Controller
             
        
             return view('modules.money_used',compact('chihangthang'));
+    }
+
+    public function Get_thu_nhap(){
+        return view('modules/thunhapps');
+    }
+    public function Post_thu_nhap(ThunhapRequest $request){
+        $data=user::find(Auth::guard('user')->user()->id);
+            try{
+                thunhapps::insert([
+                    'tenthunhap'=> $request->tenthunhap,
+                    'giatri'=>$request->giatri,
+                    'ngaythang'=>date('Y-m'),
+                    'user_id'=>$data->id,
+                    'created_at'=>Carbon::now()
+                ]);
+                return redirect()->route('tktn')->with(['message'=>'Thêm thành công!']);
+            }
+            catch(\Illuminate\Database\QueryException $ex){ 
+                return redirect()->back()->with(['message'=>'Không thể thêm!']);
+            }                
+    }
+    public function Get_thong_ke_thu_nhap(Request $request){
+        if($request->get('query') && $request->get('query')!='')
+        {
+            $data=thunhapps::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.$request->get('query').'%')->get();
+        }
+        else
+            $data=thunhapps::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.$request->get('query').'%')->get();
+        return view('modules.thongkethunhap', compact('data'));
+    }
+    public function Post_ajax_delete_tn(Request $request)
+    {
+        if($request->ajax())
+        {
+            try
+            {
+                thunhapps::find($request->id)->delete();
+                return 'ok';
+            }
+            catch(\Illuminate\Database\QueryException $ex){ 
+               return 'error';
+            }
+        }
+    }
+    public function Post_ajax_delete_ntn(Request $request)
+    {
+        if($request->ajax())
+        {
+            try
+            {
+                thunhapps::whereIn('id',$request->id)->delete();
+                return 'ok';
+            }
+            catch(\Illuminate\Database\QueryException $ex){ 
+               return 'error';
+            } 
+        }
     }
 }
