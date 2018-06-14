@@ -465,17 +465,28 @@ class Qlchitieu extends Controller
     }
 
     public function chitieutheothang(Request $request){
-
-        if($request->get('query')&& $request->get('query')!='')
-        {
+            // $ctn=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->get('query'))->get();
+            // $kc=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->get('query'))->get();
+            // $tnps=thunhapps::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->get('query'))->get();    
+        if($request->get('query') && $request->get('query')!=''){
+            $ctn=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->get('query'))->get();
+            $kc=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->get('query'))->get();
+            $tnps=thunhapps::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->get('query'))->get();   
             $day=$request->get('query');
-            $batbuoc=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->query)->get();
         }
-        else{
-            $day='';
-            $batbuoc=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',date('Y-m'))->get();
+        else
+        {
+            $ctn=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',date('Y-m'))->get();
+            $kc=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',date('Y-m'))->get();
+            $tnps=thunhapps::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',date('Y-m'))->get();  
+            $day='';  
         }
-        return view('modules/chitieutheothang',compact('day','batbuoc'));
+        $qq=0;
+        if(count($tnps)==0 && count($ctn)==0 && count($kc)==0)
+        {
+            $qq=1;
+        }
+        return view('modules/chitieutheothang', compact('ctn','kc','tnps','qq','day'));
     }
 
     public function Get_thu_nhap(){
@@ -657,5 +668,164 @@ class Qlchitieu extends Controller
         header('Content-type: application/vnd.ms-excel');
         header('Content-Disposition: attachment; filename="thongkechitieu.xls"');
         PHPExcel_IOFactory::createWriter($excel, 'Excel2007')->save('php://output');
+    }
+    public function report2(Request $request){
+        if($request->get('query') && $request->get('query')!=''){
+            $ctn=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->get('query'))->get();
+            $kc=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->get('query'))->get();
+            $tnps=thunhapps::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->get('query'))->get();   
+            $day=$request->get('query');
+        }
+        else
+        {
+            $ctn=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',date('Y-m'))->get();
+            $kc=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',date('Y-m'))->get();
+            $tnps=thunhapps::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',date('Y-m'))->get();  
+            $data=date('Y-m');
+        }
+        if(count($tnps)==0 && count($ctn)==0 && count($kc)==0)
+        {
+            return redirect()->back();
+        }
+        else{
+
+            $excel = new PHPExcel();
+
+            $excel->setActiveSheetIndex(0);
+            
+            $excel->getDefaultStyle()->getFont()->setName('Times New Roman');
+            $excel->getDefaultStyle()->getFont()->setSize(13);
+            $excel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
+            $excel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+            $excel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
+            $excel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
+            $excel->getActiveSheet()->getColumnDimension('F')->setWidth(20);
+            $excel->getActiveSheet()->setTitle('Thống kê chi tiêu');
+            $excel->getActiveSheet()->setCellValue('C1'  ,' Thống Kê Chi Tiêu ');
+            $excel->getActiveSheet()->setCellValue('C2'  ,'      '.$day); 
+            $excel->getActiveSheet()->getStyle("C1")->getFont()->setSize(30);
+            $excel->getActiveSheet()->getStyle("C2")->getFont()->setSize(30);
+            $excel->getActiveSheet()->setCellValue('A3'  ,'Mã người dùng: 0'.Auth::guard('user')->user()->id);
+            $excel->getActiveSheet()->setCellValue('A4'  ,'Tài khoản: '.Auth::guard('user')->user()->email);
+            $excel->getActiveSheet()->setCellValue('A5'  ,'Họ tên: '.Auth::guard('user')->user()->hoten);
+            $excel->getActiveSheet()->setCellValue('A6'  ,'Thu nhập hiện tại: '.number_format(Auth::guard('user')->user()->thunhap). ' đ');
+            $rowbegin=8;
+            $row=$rowbegin;
+           
+            if(count($kc)>0){
+                $row=$rowbegin+1;
+                $rowstart=$row+1;
+                $excel->getActiveSheet()->setCellValue('B'.$row  ,'      Khoản chi bắt buộc');
+                $excel->getActiveSheet()->getStyle('B'.$row.'')->getFont()->setBold(true);
+                $excel->getActiveSheet()->getStyle('B'.$row.'')->getFont()->setSize(20);
+
+                $row++;
+                $excel->getActiveSheet()->setCellValue('A'.$row  ,'STT');
+                $excel->getActiveSheet()->setCellValue('B'.$row  ,'Tên chi tiêu');
+                $excel->getActiveSheet()->setCellValue('C'.$row  ,'số tiền');
+                $excel->getActiveSheet()->setCellValue('D'.$row  ,'Ngày');
+                $excel->getActiveSheet()->getStyle('A'.$row.':C'.$row.'')->getFont()->setBold(true);
+                foreach($kc as $key=>$val){
+                    $row++;
+                    $stt=$key+1;
+                    $excel->getActiveSheet()->setCellValue('A'.$row  ,$stt);
+                    $excel->getActiveSheet()->setCellValue('B'.$row  ,$val->tenkhoanchi);
+                    $excel->getActiveSheet()->setCellValue('C'.$row  ,number_format($val->giatri));
+                    $excel->getActiveSheet()->setCellValue('D'.$row  ,substr($val->created_at,0,strpos($val->created_at,' ')));
+                }
+                $excel->getActiveSheet()
+                ->getStyle('A'.$rowbegin.':D'.$row)
+                ->getAlignment()
+                ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                $styleArray = array(
+                    'borders' => array(
+                        'allborders' => array(
+                            'style' => PHPExcel_Style_Border::BORDER_THIN
+                        )
+                    )
+                );
+                $excel->getActiveSheet()->getStyle("A".$rowstart.":D".$row)->applyFromArray($styleArray);
+            }
+            //$rowbegin!=8? $rowbegin=$row+4:'';
+            $row==$rowbegin? '':$rowbegin=$row+4;
+            if(count($ctn)>0){
+                $row=$rowbegin+1;
+                $rowstart=$row+1;
+                $excel->getActiveSheet()->setCellValue('B'.$row  ,'       Khoản chi phát sinh');
+                $excel->getActiveSheet()->getStyle('B'.$row.'')->getFont()->setBold(true);
+                $excel->getActiveSheet()->getStyle('B'.$row.'')->getFont()->setSize(20);
+
+                $row++;
+                $excel->getActiveSheet()->setCellValue('A'.$row  ,'STT');
+                $excel->getActiveSheet()->setCellValue('B'.$row  ,'Tên chi tiêu');
+                $excel->getActiveSheet()->setCellValue('C'.$row  ,'số tiền');
+                $excel->getActiveSheet()->setCellValue('D'.$row  ,'Ngày');
+                $excel->getActiveSheet()->getStyle('A'.$row.':C'.$row.'')->getFont()->setBold(true);
+                foreach($ctn as $key=>$val){
+                    $row++;
+                    $stt=$key+1;
+                    $excel->getActiveSheet()->setCellValue('A'.$row  ,$stt);
+                    $excel->getActiveSheet()->setCellValue('B'.$row  ,$val->chitieu);
+                    $excel->getActiveSheet()->setCellValue('C'.$row  ,number_format($val->giatri));
+                    $excel->getActiveSheet()->setCellValue('D'.$row  ,substr($val->created_at,0,strpos($val->created_at,' ')));
+                }
+                $excel->getActiveSheet()
+                ->getStyle('A'.$rowbegin.':D'.$row)
+                ->getAlignment()
+                ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                $styleArray = array(
+                    'borders' => array(
+                        'allborders' => array(
+                            'style' => PHPExcel_Style_Border::BORDER_THIN
+                        )
+                    )
+                );
+                $excel->getActiveSheet()->getStyle("A".$rowstart.":D".$row)->applyFromArray($styleArray);
+            }
+            //$rowbegin!=8? $rowbegin=$row+4:'';
+             $row==$rowbegin? '':$rowbegin=$row+4;
+            if(count($tnps)>0){
+                $row=$rowbegin+1;
+                $rowstart=$row+1;
+                $excel->getActiveSheet()->setCellValue('B'.$row  ,'       Thu nhập thêm');
+                $excel->getActiveSheet()->getStyle('B'.$row.'')->getFont()->setBold(true);
+                $excel->getActiveSheet()->getStyle('B'.$row.'')->getFont()->setSize(20);
+
+                $row++;
+                $excel->getActiveSheet()->setCellValue('A'.$row  ,'STT');
+                $excel->getActiveSheet()->setCellValue('B'.$row  ,'Tên thu nhập');
+                $excel->getActiveSheet()->setCellValue('C'.$row  ,'số tiền');
+                $excel->getActiveSheet()->setCellValue('D'.$row  ,'Ngày');
+                $excel->getActiveSheet()->getStyle('A'.$row.':C'.$row.'')->getFont()->setBold(true);
+                foreach($tnps as $key=>$val){
+                    $row++;
+                    $stt=$key+1;
+                    $excel->getActiveSheet()->setCellValue('A'.$row  ,$stt);
+                    $excel->getActiveSheet()->setCellValue('B'.$row  ,$val->tenthunhap);
+                    $excel->getActiveSheet()->setCellValue('C'.$row  ,number_format($val->giatri));
+                    $excel->getActiveSheet()->setCellValue('D'.$row  ,substr($val->created_at,0,strpos($val->created_at,' ')));
+                }
+                $excel->getActiveSheet()
+                ->getStyle('A'.$rowbegin.':D'.$row)
+                ->getAlignment()
+                ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+                $styleArray = array(
+                    'borders' => array(
+                        'allborders' => array(
+                            'style' => PHPExcel_Style_Border::BORDER_THIN
+                        )
+                    )
+                );
+                $excel->getActiveSheet()->getStyle("A".$rowstart.":D".$row)->applyFromArray($styleArray);
+
+            }
+           
+
+            header('Content-type: application/vnd.ms-excel');
+            header('Content-Disposition: attachment; filename="thongkechitieuthang'.$day.'.xls"');
+            PHPExcel_IOFactory::createWriter($excel, 'Excel2007')->save('php://output');
+            
+
+        }
     }
 }

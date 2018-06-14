@@ -57,6 +57,7 @@ Route::group(['middleware' => ['admincheck:1']], function () {
     });
     Route::get('tong-chi-tieu-theo-thang',['as'=>'tong-chi-tieu-theo-thang','uses'=>'Qlchitieu@chitieutheothang']);
     Route::get('report',['as'=>'report','uses'=>'Qlchitieu@report']);
+    Route::get('report2',['as'=>'report2','uses'=>'Qlchitieu@report2']);
 });
 
 Route::group(['prefix' => 'admin','middleware'=>'admincheck:0'], function () {

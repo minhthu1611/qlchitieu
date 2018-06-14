@@ -52,7 +52,7 @@
                                             <td>{{ isset($val['phatsinh'])? number_format($val['phatsinh']).' đ': '0 đ' }}</td>
                                             <td>{{ isset($val['tongchi'])? number_format($val['tongchi']).' đ': '0 đ' }}</td>
                                             <td>{{ isset($val['thunhapps'])? number_format($val['thunhapps']).' đ': '0 đ' }}</td>
-                                            <td><a href='' class="btn btn-default"> <i class='fe fe-info'></i> Xem chi tiết</a></td>
+                                            <td><a href='{{ route('tong-chi-tieu-theo-thang').'?query='.$val['ngaythang'] }}' class="btn btn-default"> <i class='fe fe-info'></i> Xem chi tiết</a></td>
                                         </tr>
                                         <?php ?>
                                         @endforeach
