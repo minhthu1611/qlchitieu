@@ -6,25 +6,29 @@
     </button>      
     <div class="d-flex order-lg-2 ml-auto">
         <!-- Notification -->
+        @if($error=='error')
         <div class="dropdown d-none d-md-flex">
           <a class="nav-link icon" data-toggle="dropdown">
             <i class="fe fe-bell"></i>
             <span class="nav-unread"></span>
           </a>
+        
           <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-            <?php $time=time()?>
-            @if(date('d', $time)=='11')
+         
+         
               <a href="{{route('gtkc')}}" class="dropdown-item d-flex">
                 <span class="avatar mr-3 align-self-center" style="background-image: url(demo/faces/male/41.jpg)"></span>
                 <div>
                   <strong>Cập nhật khoản chi bắt buộc trong tháng này!!!</strong>
                 </div>
               </a>
-            @endif
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item text-center text-muted-dark">Mark all as read</a>
-          </div>
+              <div class="dropdown-divider"></div>
+              {{-- <a href="#" class="dropdown-item text-center text-muted-dark">Mark all as read</a> --}}
+            </div>
+           
+         
         </div>
+        @endif
         <!-- end: Notification -->
         <!-- User -->
         <div class="dropdown">

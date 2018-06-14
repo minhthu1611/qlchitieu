@@ -51,7 +51,7 @@
 				</div>
 			</div>
 			<div class="col-lg-6">
-				<div class="card">
+				<div class="card" style="height:565px;">
 					<div class="card-status bg-red"></div>
 					<div class="card-header">
 						<h3 class="card-title">Preview hình ảnh</h3>

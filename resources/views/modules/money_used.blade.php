@@ -37,7 +37,7 @@
                                             <th>Khoản bắt buộc</th>
                                             <th>Khoản phát sinh</th>
                                             <th>Tổng chi tiêu hàng tháng</th>
-                                            <th width='20'><button class="btn btn-success report"> <i class="fe fe-file-text"></i> Xuất excel</button></th>
+                                            {{-- <th width='20'></th> --}}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -50,12 +50,13 @@
                                             <td>{{ isset($val['batbuoc'])? number_format($val['batbuoc']):'0 đ' }}</td>
                                             <td>{{ isset($val['phatsinh'])? number_format($val['phatsinh']): '0 đ' }}</td>
                                             <td>{{number_format($val['tongchi']). ' đ'}}</td>
-                                            <td></td>
                                         </tr>
                                         <?php ?>
                                         @endforeach
                                         <tr>
-                                       
+                                            <td colspan="6">
+                                                    <button class="btn btn-success report"> <i class="fe fe-file-text"></i> Xuất excel</button>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>

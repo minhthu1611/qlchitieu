@@ -13,7 +13,7 @@
                                                 <?php $time=time()?>
                                                 <option value="">--Thời điểm--</option>
                                                 @for($i=0;$i<6;$i++)
-                                                    {{$time=strtotime("-".$i."Months")}}
+                                                    {{ $time=strtotime("-".$i."Months") }}
                                                     <option @if($day==date('Y-m',$time)) selected @endif value="{{date('Y-m', $time)}}">{{date('Y-m', $time)}}</option>
                                                 @endfor
                                         </select>

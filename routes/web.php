@@ -55,6 +55,7 @@ Route::group(['middleware' => ['admincheck:1']], function () {
 
         Route::post('delete_ntn',['as'=>'delete_ntn','uses'=>'Qlchitieu@Post_ajax_delete_ntn']);
     });
+    Route::get('tong-chi-tieu-theo-thang',['as'=>'tong-chi-tieu-theo-thang','uses'=>'Qlchitieu@chitieutheothang']);
     Route::get('report',['as'=>'report','uses'=>'Qlchitieu@report']);
 });
 

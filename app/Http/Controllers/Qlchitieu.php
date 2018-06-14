@@ -428,6 +428,11 @@ class Qlchitieu extends Controller
             return view('modules.money_used',compact('chihangthang','day'));
     }
 
+    public function chitieutheothang(){
+
+        return view('modules/chitieutheothang');
+    }
+
     public function Get_thu_nhap(){
         return view('modules/thunhapps');
     }
