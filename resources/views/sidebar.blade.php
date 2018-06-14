@@ -54,10 +54,10 @@
                 </ul>
             </li>
         <li>
-        <li @if(Request::segment(1)=='money-used') class='active' @endif>
+        <li @if(Request::segment(1)=='tong-chi-tieu-theo-thang') class='active' @endif>
             <a href="{{route('tong-chi-tieu-theo-thang')}}"><i class="fe fe-dollar-sign"></i>Tổng chi tiêu theo tháng</a>
         </li>
-        <li @if(Request::segment(1)=='money-used') class='active' @endif>
+        <li @if(Request::segment(1)=='tong-chi-tieu') class='active' @endif>
             <a href="{{route('gmoney-used')}}"><i class="fe fe-dollar-sign"></i>Tổng chi tiêu</a>
         </li>
     </ul>

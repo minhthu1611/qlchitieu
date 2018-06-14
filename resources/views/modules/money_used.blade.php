@@ -12,8 +12,8 @@
                                         <select name="query" id="query" class="form-control">
                                             <option value="">--Thời điểm--</option>
                                             <?php $time=time()?>
-                                            @for($i=0;$i<6;$i++)
-                                                {{$time=strtotime("-".$i."Months")}}
+                                            @for($i=0;$i<12;$i++)
+                                                {{ $time=strtotime("-".$i."Months") }}
                                                 <option @if($day==date('Y-m',$time)) selected @endif value="{{ date('Y-m',$time) }}">{{date('Y-m', $time)}}</option>
                                             @endfor
                                         </select>
@@ -36,8 +36,9 @@
                                           
                                             <th>Khoản bắt buộc</th>
                                             <th>Khoản phát sinh</th>
-                                            <th>Tổng chi tiêu hàng tháng</th>
-                                            {{-- <th width='20'></th> --}}
+                                            <th>Tổng chi tiêu</th>
+                                            <th>Thu nhập thêm</th>
+                                            <th >Thao tác</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -47,9 +48,11 @@
                                             <td>{{$key+1}}</td>
                                             <td>{{$val['ngaythang']}}</td>
                                            
-                                            <td>{{ isset($val['batbuoc'])? number_format($val['batbuoc']):'0 đ' }}</td>
-                                            <td>{{ isset($val['phatsinh'])? number_format($val['phatsinh']): '0 đ' }}</td>
-                                            <td>{{number_format($val['tongchi']). ' đ'}}</td>
+                                            <td>{{ isset($val['batbuoc'])? number_format($val['batbuoc']).' đ':'0 đ' }}</td>
+                                            <td>{{ isset($val['phatsinh'])? number_format($val['phatsinh']).' đ': '0 đ' }}</td>
+                                            <td>{{ isset($val['tongchi'])? number_format($val['tongchi']).' đ': '0 đ' }}</td>
+                                            <td>{{ isset($val['thunhapps'])? number_format($val['thunhapps']).' đ': '0 đ' }}</td>
+                                            <td><a href='' class="btn btn-default"> <i class='fe fe-info'></i> Xem chi tiết</a></td>
                                         </tr>
                                         <?php ?>
                                         @endforeach

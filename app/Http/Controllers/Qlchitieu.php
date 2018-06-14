@@ -363,12 +363,12 @@ class Qlchitieu extends Controller
                 ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->where('ngaythang',$request->get('query'))->get();
                 $chibatbuoc=khoanchi::where('user_id',Auth::guard('user')->user()->id)
                 ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->where('ngaythang',$request->get('query'))->get();
-                // $thunhaps=thunhapps::where('user_id',Auth::guard('user')->user()->id)
-                // ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->where('ngaythang',$request->get('query'))->get();
-
+                $thunhaps=thunhapps::where('user_id',Auth::guard('user')->user()->id)
+                ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->where('ngaythang',$request->get('query'))->get();
+               
                 foreach($chibatbuoc as $cbb){
 
-                    $chihangthang[]=['ngaythang'=>$cbb->ngaythang,'tongchi'=>$cbb->sotien];
+                    $chihangthang[]=['ngaythang'=>$cbb->ngaythang,'tongchi'=>$cbb->sotien,'batbuoc'=>$cbb->sotien];
                 }
                 foreach($chitieu as $ct){
                     $t=-1;
@@ -381,24 +381,47 @@ class Qlchitieu extends Controller
                     }
                     if($t>-1){
                         $chihangthang[$t]['tongchi']= intval($chihangthang[$t]['tongchi'])+intval($ct->sotien);
+                        $chihangthang[$t]['phatsinh']=$ct->sotien;
                     }
                     else{
-                        $chihangthang[]=['ngaythang'=>$ct->ngaythang,'tongchi'=>$ct->sotien];
+                        $chihangthang[]=['ngaythang'=>$ct->ngaythang,'tongchi'=>$ct->sotien,'phatsinh'=>$ct->sotien];
+                    }
+                }
+                foreach($thunhaps as $tnps){
+                    $t=-1;
+                    foreach($chihangthang as $key=> $k){
+                        if($tnps->ngaythang==$k['ngaythang']){
+                            $t=$key;
+                            break;
+                        }
+                        
+                    }
+                    if($t>-1){
+                        $chihangthang[$t]['thunhapps']=$tnps->sotien;
+                    }
+                    else{
+                        $chihangthang[]=['ngaythang'=>$tnps->ngaythang,'thunhapps'=>$tnps->sotien];
                     }
                 }
             }
             else{
                 $day='';
-                // $date=[];
-                // for($i=0;$i<=6;$i++)
-                // {
-                //     $date[]=date("Y-m",mktime(0,0,0,date('m')-$i,date('d'),date('Y')));
-                // }
+                $time=time();
+               
+                $date=[];
+                for($i=0;$i<=12;$i++)
+                {
+                    $time=strtotime("-".$i."Months");
+                    $date[]=date("Y-m",$time);
+                }
+                //dd($date);
                 $chitieu=chitieungay::where('user_id',Auth::guard('user')->user()->id)
-                ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->get();
+                ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->whereIn('ngaythang',$date)->get();
                 $chibatbuoc=khoanchi::where('user_id',Auth::guard('user')->user()->id)
-                ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->get();
-           
+                ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->whereIn('ngaythang',$date)->get();
+                $thunhaps=thunhapps::where('user_id',Auth::guard('user')->user()->id)
+                ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->whereIn('ngaythang',$date)->get();
+                //dd($thunhaps);
 
                     foreach($chibatbuoc as $cbb){
 
@@ -421,16 +444,38 @@ class Qlchitieu extends Controller
                             $chihangthang[]=['ngaythang'=>$ct->ngaythang,'tongchi'=>$ct->sotien,'phatsinh'=>$ct->sotien];
                         }
                     }
-            }
-           // dd($chihangthang);
-            
-       
+                    foreach($thunhaps as $tnps){
+                        $t=-1;
+                        foreach($chihangthang as $key=> $k){
+                            if($tnps->ngaythang==$k['ngaythang']){
+                                $t=$key;
+                                break;
+                            }
+                            
+                        }
+                        if($t>-1){
+                            $chihangthang[$t]['thunhapps']=$tnps->sotien;
+                        }
+                        else{
+                            $chihangthang[]=['ngaythang'=>$tnps->ngaythang,'thunhapps'=>$tnps->sotien];
+                        }
+                    }
+            } 
             return view('modules.money_used',compact('chihangthang','day'));
     }
 
-    public function chitieutheothang(){
+    public function chitieutheothang(Request $request){
 
-        return view('modules/chitieutheothang');
+        if($request->get('query')&& $request->get('query')!='')
+        {
+            $day=$request->get('query');
+            $batbuoc=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->query)->get();
+        }
+        else{
+            $day='';
+            $batbuoc=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',date('Y-m'))->get();
+        }
+        return view('modules/chitieutheothang',compact('day','batbuoc'));
     }
 
     public function Get_thu_nhap(){
@@ -501,11 +546,22 @@ class Qlchitieu extends Controller
     }
     public function report()
     {
+        $time=time();
+               
+        $date=[];
+        for($i=0;$i<=12;$i++)
+        {
+            $time=strtotime("-".$i."Months");
+            $date[]=date("Y-m",$time);
+        }
+        //dd($date);
         $chitieu=chitieungay::where('user_id',Auth::guard('user')->user()->id)
-        ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->get();
+        ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->whereIn('ngaythang',$date)->get();
         $chibatbuoc=khoanchi::where('user_id',Auth::guard('user')->user()->id)
-        ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->get();
-    
+        ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->whereIn('ngaythang',$date)->get();
+        $thunhaps=thunhapps::where('user_id',Auth::guard('user')->user()->id)
+        ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->whereIn('ngaythang',$date)->get();
+        //dd($thunhaps);
 
             foreach($chibatbuoc as $cbb){
 
@@ -528,6 +584,22 @@ class Qlchitieu extends Controller
                     $chihangthang[]=['ngaythang'=>$ct->ngaythang,'tongchi'=>$ct->sotien,'phatsinh'=>$ct->sotien];
                 }
             }
+            foreach($thunhaps as $tnps){
+                $t=-1;
+                foreach($chihangthang as $key=> $k){
+                    if($tnps->ngaythang==$k['ngaythang']){
+                        $t=$key;
+                        break;
+                    }
+                    
+                }
+                if($t>-1){
+                    $chihangthang[$t]['thunhapps']=$tnps->sotien;
+                }
+                else{
+                    $chihangthang[]=['ngaythang'=>$tnps->ngaythang,'thunhapps'=>$tnps->sotien];
+                }
+            }
         // dd($chihangthang);
         $excel = new PHPExcel();
 
@@ -539,9 +611,12 @@ class Qlchitieu extends Controller
         $excel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
         $excel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
         $excel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
+        $excel->getActiveSheet()->getColumnDimension('F')->setWidth(20);
         $excel->getActiveSheet()->setTitle('Thống kê chi tiêu');
-        $excel->getActiveSheet()->setCellValue('B1'  ,'      Thống kê chi tiêu');
-        $excel->getActiveSheet()->getStyle("B1")->getFont()->setSize(30);
+        $excel->getActiveSheet()->setCellValue('C1'  ,'      Thống kê chi tiêu ');
+        $excel->getActiveSheet()->setCellValue('C2'  ,'      '.date('m/Y',strtotime("-12 Months")).' - '.date('m/Y')); 
+        $excel->getActiveSheet()->getStyle("C1")->getFont()->setSize(30);
+        $excel->getActiveSheet()->getStyle("C2")->getFont()->setSize(30);
         $excel->getActiveSheet()->setCellValue('A3'  ,'Mã người dùng: 0'.Auth::guard('user')->user()->id);
         $excel->getActiveSheet()->setCellValue('A4'  ,'Tài khoản: '.Auth::guard('user')->user()->email);
         $excel->getActiveSheet()->setCellValue('A5'  ,'Họ tên: '.Auth::guard('user')->user()->hoten);
@@ -552,20 +627,22 @@ class Qlchitieu extends Controller
         $excel->getActiveSheet()->setCellValue('E'.$row  ,'Tổng chi tiêu');
         $excel->getActiveSheet()->setCellValue('C'.$row  ,'Khoản bắt buộc');
         $excel->getActiveSheet()->setCellValue('D'.$row  ,'Khoản phát sinh');
-        $excel->getActiveSheet()->getStyle('A'.$row.':E'.$row.'')->getFont()->setBold(true);
+        $excel->getActiveSheet()->setCellValue('F'.$row  ,'Thu nhập thêm');
+        $excel->getActiveSheet()->getStyle('A'.$row.':F'.$row.'')->getFont()->setBold(true);
   
         foreach($chihangthang as $key=>$value){
             $row++;
             $stt=$key+1;
             $excel->getActiveSheet()->setCellValue('A'.$row  ,$stt);
             $excel->getActiveSheet()->setCellValue('B'.$row  ,$value['ngaythang']);
-            $excel->getActiveSheet()->setCellValue('E'.$row  ,number_format($value['tongchi']). ' đ');
+            $excel->getActiveSheet()->setCellValue('E'.$row  ,isset($value['tongchi'])? number_format($value['tongchi']). ' đ': '0 đ');
             $excel->getActiveSheet()->setCellValue('C'.$row  ,isset($value['batbuoc'])? number_format($value['batbuoc']). ' đ': '0 đ');
             $excel->getActiveSheet()->setCellValue('D'.$row  ,isset($value['phatsinh'])? number_format($value['phatsinh']). ' đ': '0 đ');
+            $excel->getActiveSheet()->setCellValue('F'.$row  ,isset($value['thunhapps'])? number_format($value['thunhapps']). ' đ': '0 đ');
             
         }
         $excel->getActiveSheet()
-        ->getStyle('A8:E'.$row)
+        ->getStyle('A8:F'.$row)
         ->getAlignment()
         ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $styleArray = array(
@@ -575,7 +652,7 @@ class Qlchitieu extends Controller
                 )
             )
         );
-      $excel->getActiveSheet()->getStyle("A8:E".$row)->applyFromArray($styleArray);
+      $excel->getActiveSheet()->getStyle("A8:F".$row)->applyFromArray($styleArray);
 
         header('Content-type: application/vnd.ms-excel');
         header('Content-Disposition: attachment; filename="thongkechitieu.xls"');

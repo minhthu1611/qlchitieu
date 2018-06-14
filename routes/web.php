@@ -44,7 +44,7 @@ Route::group(['middleware' => ['admincheck:1']], function () {
 
         Route::post('delete_nct',['as'=>'delete_nct','uses'=>'Qlchitieu@Post_ajax_delete_nct']);
     });
-    Route::get('money-used',['as'=>'gmoney-used','uses'=>'Qlchitieu@Get_money_used']);
+    Route::get('tong-chi-tieu',['as'=>'gmoney-used','uses'=>'Qlchitieu@Get_money_used']);
 
     Route::group(['prefix' => 'thu-nhap'], function () {
         Route::get('thu-nhap-phat-sinh',['as'=>'gtnps','uses'=>'Qlchitieu@Get_thu_nhap']);
@@ -59,9 +59,6 @@ Route::group(['middleware' => ['admincheck:1']], function () {
     Route::get('report',['as'=>'report','uses'=>'Qlchitieu@report']);
 });
 
-Route::get('check',function(){
-    return view('check');
-});
 Route::group(['prefix' => 'admin','middleware'=>'admincheck:0'], function () {
     Route::get('user',['as'=>'admin/user','uses'=>'Admin@get_user']);
 
