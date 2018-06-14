@@ -681,7 +681,7 @@ class Qlchitieu extends Controller
             $ctn=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',date('Y-m'))->get();
             $kc=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',date('Y-m'))->get();
             $tnps=thunhapps::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',date('Y-m'))->get();  
-            $data=date('Y-m');
+            $day=date('Y-m');
         }
         if(count($tnps)==0 && count($ctn)==0 && count($kc)==0)
         {
