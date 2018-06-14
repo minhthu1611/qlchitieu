@@ -11,12 +11,11 @@
                                     <div class="input-group justify-content-end">
                                         <select name="query" id="query" class="form-control">
                                             <option value="">--Thời điểm--</option>
-                                            <option value="2018-01">01-2018</option>
-                                            <option value="2018-02">02-2018</option>
-                                            <option value="2018-03">03-2018</option>
-                                            <option value="2018-04">04-2018</option>
-                                            <option value="2018-05">05-2018</option>
-                                            <option value="2018-06">06-2018</option>
+                                            <?php $time=time()?>
+                                            @for($i=0;$i<6;$i++)
+                                                {{$time=strtotime("-".$i."Months")}}
+                                                <option @if($day==date('Y-m',$time)) selected @endif value="{{ date('Y-m',$time) }}">{{date('Y-m', $time)}}</option>
+                                            @endfor
                                         </select>
                                         {{-- <input type="text" name="query" class="form-control" placeholder="Tìm kiếm...">
                                         <span class="input-group-append">

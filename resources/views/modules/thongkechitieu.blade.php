@@ -14,7 +14,7 @@
                                                 <?php $time=time()?>
                                                 @for($i=0;$i<6;$i++)
                                                     {{$time=strtotime("-".$i."Months")}}
-                                                    <option value="{{date('Y-m', $time)}}">{{date('m-Y', $time)}}</option>
+                                                    <option @if($day==date('Y-m',$time)) selected @endif value="{{ date('Y-m',$time) }}">{{date('Y-m', $time)}}</option>
                                                 @endfor
                                             </select>
                                             {{-- <input type="text" name="query" class="form-control" placeholder="Tìm kiếm...">

@@ -161,15 +161,20 @@ class Qlchitieu extends Controller
     public function Get_dskhoanchi(Request $request)
     {
         if($request->get('query') && $request->get('query')!=''){
+            $day=$request->get('query');
             $data=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.$request->get('query').'%')->get();
         }
         else if($request->get('query') && $request->get('query')==1)
         {
+            $day=$request->get('query');
             $data=khoanchi::where('user_id',Auth::guard('user')->user()->id)->get();
         }
-        else
+        else{
+            $day='';
             $data=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.date('Y-m').'%')->get();
-        return view('modules.dskhoanchi',compact('data'));
+        }
+           
+        return view('modules.dskhoanchi',compact('data','day'));
     }
 
     public function Get_chitieungay(){
@@ -203,18 +208,21 @@ class Qlchitieu extends Controller
     {
        if($request->get('query') && $request->get('query')!='')
        {
+           $day=$request->get('query');
             $tnps=thunhapps::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.$request->get('query').'%')->sum('giatri');
             $data=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.$request->get('query').'%')->get();
             $money=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.$request->get('query').'%')->sum('giatri');
        }
        else if($request->get('query') && $request->get('query')==1)
        {
+            $day=$request->get('query');
             $tnps=thunhapps::where('user_id',Auth::guard('user')->user()->id)->sum('giatri');
             $data=chitieungay::where('user_id',Auth::guard('user')->user()->id)->get();
             $money=khoanchi::where('user_id',Auth::guard('user')->user()->id)->sum('giatri');
        }
        else
        {
+           $day='';
             $tnps=thunhapps::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.date("Y-m").'%')->sum('giatri');
             $data=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.date("Y-m").'%')->get();
             $money=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.date("Y-m").'%')->sum('giatri');
@@ -223,7 +231,7 @@ class Qlchitieu extends Controller
         $info=user::find(Auth::guard('user')->user()->id);
     
         $money_can_use=$info->thunhap+$tnps-$money;
-        return view('modules.thongkechitieu',compact('data','info','money_can_use'));
+        return view('modules.thongkechitieu',compact('data','info','money_can_use','day'));
     }
     public function Post_ajax_delete_kc(Request $request)
     {
@@ -346,6 +354,7 @@ class Qlchitieu extends Controller
             $chihangthang=[];
             if($request->get('query') && $request->get('query')!='')
             {
+                $day=$request->get('query');
                 $chitieu=chitieungay::where('user_id',Auth::guard('user')->user()->id)
                 ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->where('ngaythang',$request->get('query'))->get();
                 $chibatbuoc=khoanchi::where('user_id',Auth::guard('user')->user()->id)
@@ -375,6 +384,7 @@ class Qlchitieu extends Controller
                 }
             }
             else{
+                $day='';
                 // $date=[];
                 // for($i=0;$i<=6;$i++)
                 // {
@@ -409,7 +419,7 @@ class Qlchitieu extends Controller
             }
             
        
-            return view('modules.money_used',compact('chihangthang'));
+            return view('modules.money_used',compact('chihangthang','day'));
     }
 
     public function Get_thu_nhap(){
@@ -434,11 +444,21 @@ class Qlchitieu extends Controller
     public function Get_thong_ke_thu_nhap(Request $request){
         if($request->get('query') && $request->get('query')!='')
         {
+            $day=$request->get('query');
             $data=thunhapps::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.$request->get('query').'%')->get();
         }
+        else if($request->get('query') && $request->get('query')==1)
+        {
+            $data=thunhapps::where('user_id',Auth::guard('user')->user()->id)->get();
+        }
         else
+        {
+            $day='';
             $data=thunhapps::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.$request->get('query').'%')->get();
-        return view('modules.thongkethunhap', compact('data'));
+        }
+        
+            
+        return view('modules.thongkethunhap', compact('data','day'));
     }
     public function Post_ajax_delete_tn(Request $request)
     {

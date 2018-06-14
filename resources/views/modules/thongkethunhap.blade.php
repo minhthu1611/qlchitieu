@@ -10,12 +10,12 @@
                                 <form action="" method="get" id="myform">
                                         <div class="input-group justify-content-end">
                                                 <select name="query" id="query" class="form-control">
-                                                        <?php $time=time()?>
                                                         <option value="">--Thời điểm--</option>
-                                                        @for($i=0;$i<6;$i++)
-                                                            {{$time=strtotime("-".$i."Months")}}
-                                                            <option value="{{date('Y-m', $time)}}">{{date('m-Y', $time)}}</option>
-                                                        @endfor
+                                                    <?php $time=time()?>
+                                                    @for($i=0;$i<6;$i++)
+                                                        {{$time=strtotime("-".$i."Months")}}
+                                                        <option @if($day==date('Y-m',$time)) selected @endif value="{{ date('Y-m',$time) }}">{{date('Y-m', $time)}}</option>
+                                                    @endfor
                                                 </select>
                                             {{-- <input type="text" name="query" class="form-control" placeholder="Tìm kiếm...">
                                             <span class="input-group-append">
@@ -23,6 +23,7 @@
                                             </span> --}}
                                         </div>
                                 </form>
+                                <button id='find-all' type="" class="btn btn-danger">Hiển thị tất cả</button>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -137,6 +138,11 @@
                 var qq=$(this).val()
                 location.href='{{route("tktn")}}?query='+qq
                 console.log(qq)
+            });
+            $('#find-all').click(function () { 
+                var cc=1
+                location.href='{{route("tktn")}}?query='+cc
+                console.log(cc)
             });
     </script>
 @endsection
