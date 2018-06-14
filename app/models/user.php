@@ -13,4 +13,8 @@ class user extends Authenticatable
     {
     	return $this->hasMany('App\models\khoanchi');
     }
+    public function chitieungay()
+    {
+    	return $this->hasMany('App\models\chitieungay');
+    }
 }

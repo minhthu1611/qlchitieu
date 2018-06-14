@@ -37,7 +37,7 @@ class Qlchitieu extends Controller
         $auth= array('email'=>$request->username,'password'=>$request->pass);
         if(Auth::guard('user')->attempt($auth,false))
 			{
-				return redirect()->route('trangchu');			}
+				return redirect()->route('gtkc');			}
 		else
 			{
 				return redirect()->back()->with(['errormessage'=>'Email hoặc password không đúng!']);
@@ -56,7 +56,7 @@ class Qlchitieu extends Controller
         {
             $client = new \GuzzleHttp\Client();
             $res = $client->request('GET', 'https://nongsancairang.com/api/product/100000');
-           $data= json_decode($res->getBody());
+            $data= json_decode($res->getBody());
         }
        
         return view('modules.dashboard',compact('data'));
@@ -163,8 +163,12 @@ class Qlchitieu extends Controller
         if($request->get('query') && $request->get('query')!=''){
             $data=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.$request->get('query').'%')->get();
         }
-        else
+        else if($request->get('query') && $request->get('query')==1)
+        {
             $data=khoanchi::where('user_id',Auth::guard('user')->user()->id)->get();
+        }
+        else
+            $data=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.date('Y-m').'%')->get();
         return view('modules.dskhoanchi',compact('data'));
     }
 
@@ -202,6 +206,12 @@ class Qlchitieu extends Controller
             $tnps=thunhapps::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.$request->get('query').'%')->sum('giatri');
             $data=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.$request->get('query').'%')->get();
             $money=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang','like','%'.$request->get('query').'%')->sum('giatri');
+       }
+       else if($request->get('query') && $request->get('query')==1)
+       {
+            $tnps=thunhapps::where('user_id',Auth::guard('user')->user()->id)->sum('giatri');
+            $data=chitieungay::where('user_id',Auth::guard('user')->user()->id)->get();
+            $money=khoanchi::where('user_id',Auth::guard('user')->user()->id)->sum('giatri');
        }
        else
        {
@@ -334,18 +344,42 @@ class Qlchitieu extends Controller
     public function Get_money_used(Request $request)
     {
             $chihangthang=[];
-            if($request->get('query') && $request->get('query')!=''){
+            if($request->get('query') && $request->get('query')!='')
+            {
                 $chitieu=chitieungay::where('user_id',Auth::guard('user')->user()->id)
-                ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->get();
+                ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->where('ngaythang',$request->get('query'))->get();
                 $chibatbuoc=khoanchi::where('user_id',Auth::guard('user')->user()->id)
-                ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->get();
+                ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->where('ngaythang',$request->get('query'))->get();
+                // $thunhaps=thunhapps::where('user_id',Auth::guard('user')->user()->id)
+                // ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->where('ngaythang',$request->get('query'))->get();
+
+                foreach($chibatbuoc as $cbb){
+
+                    $chihangthang[]=['ngaythang'=>$cbb->ngaythang,'tongchi'=>$cbb->sotien];
+                }
+                foreach($chitieu as $ct){
+                    $t=-1;
+                    foreach($chihangthang as $key=> $k){
+                        if($ct->ngaythang==$k['ngaythang']){
+                            $t=$key;
+                            break;
+                        }
+                        
+                    }
+                    if($t>-1){
+                        $chihangthang[$t]['tongchi']= intval($chihangthang[$t]['tongchi'])+intval($ct->sotien);
+                    }
+                    else{
+                        $chihangthang[]=['ngaythang'=>$ct->ngaythang,'tongchi'=>$ct->sotien];
+                    }
+                }
             }
             else{
-                $date=[];
-                for($i=0;$i<=6;$i++)
-                {
-                    $date[]=date("Y-m",mktime(0,0,0,date('m')-$i,date('d'),date('Y')));
-                }
+                // $date=[];
+                // for($i=0;$i<=6;$i++)
+                // {
+                //     $date[]=date("Y-m",mktime(0,0,0,date('m')-$i,date('d'),date('Y')));
+                // }
                 $chitieu=chitieungay::where('user_id',Auth::guard('user')->user()->id)
                 ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->get();
                 $chibatbuoc=khoanchi::where('user_id',Auth::guard('user')->user()->id)

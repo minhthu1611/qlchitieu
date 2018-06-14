@@ -31,7 +31,7 @@
                 </li>
         <li>
         <li @if(Request::segment(1)=='chi-tieu') class='active' @endif>
-                <a href="#chitieu" data-toggle="collapse" aria-expanded="false"><i class="fe fe-file"></i> Chi tiêu trong ngày<i class="dropdown-toggle float-right"></i></a>
+                <a href="#chitieu" data-toggle="collapse" aria-expanded="false"><i class="fe fe-book-open"></i> Chi tiêu trong ngày<i class="dropdown-toggle float-right"></i></a>
                 <ul @if(Request::segment(2)=='them-chi-tieu-ngay'||Request::segment(2)=='thong-ke-chi-tieu') class="collapsed list-unstyled" @endif  id="chitieu" class="collapse list-unstyled" >
 
                     <li @if(Request::segment(2)=='them-chi-tieu-ngay') class='active' @endif>
@@ -44,9 +44,8 @@
             </li>
         <li @if(Request::segment(1)=='thu-nhap-phat-sinh') class='active' @endif>
                 <a href="#thunhapps" data-toggle="collapse" aria-expanded="false"><i class="fe fe-file"></i>Thu nhập phát sinh<i class="dropdown-toggle float-right"></i></a>
-                <ul @if(Request::segment(2)=='them-thu-nhap'||Request::segment(2)=='thong-ke-thu-nhap') class="collapsed list-unstyled" @endif  id="thunhapps" class="collapse list-unstyled" >
-
-                    <li @if(Request::segment(2)=='them-thu-nhap') class='active' @endif>
+                <ul @if(Request::segment(2)=='thu-nhap-phat-sinh'||Request::segment(2)=='thong-ke-thu-nhap') class="collapsed list-unstyled" @endif  id="thunhapps" class="collapse list-unstyled" >
+                    <li @if(Request::segment(2)=='thu-nhap-phat-sinh') class='active' @endif>
                         <a href="{{route('gtnps')}}"><i class=""></i> Thêm thu nhập</a>
                     </li>
                     <li @if(Request::segment(2)=='thong-ke-thu-nhap') class='active' @endif>
@@ -56,7 +55,7 @@
             </li>
         <li>
         <li>
-            <a href="{{route('gmoney-used')}}"><i class=""></i> Tổng chi tiêu</a>
+            <a href="{{route('gmoney-used')}}"><i class="fe fe-dollar-sign"></i>Tổng chi tiêu</a>
         </li>
     </ul>
 </nav>

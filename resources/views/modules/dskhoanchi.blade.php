@@ -10,21 +10,20 @@
                             <form action="" method="get" id="myform">
                                     <div class="input-group justify-content-end">
                                         <select name="query" id="query" class="form-control">
-                                            <option value="">--Thời điểm--</option>
-                                            <option value="2018-01">01-2018</option>
-                                            <option value="2018-02">02-2018</option>
-                                            <option value="2018-03">03-2018</option>
-                                            <option value="2018-04">04-2018</option>
-                                            <option value="2018-05">05-2018</option>
-                                            <option value="2018-06">06-2018</option>
+                                                <?php $time=time()?>
+                                                <option value="">--Thời điểm--</option>
+                                                @for($i=0;$i<6;$i++)
+                                                    {{$time=strtotime("-".$i."Months")}}
+                                                    <option value="{{date('Y-m', $time)}}">{{date('m-Y', $time)}}</option>
+                                                @endfor
                                         </select>
                                         {{-- <input type="text" name="query" class="form-control" placeholder="Tìm kiếm...">
                                         <span class="input-group-append">
                                             <button class="btn btn-danger sub" type="submit"><i class="fe fe-search"></i></button>
                                         </span> --}}
-                                    
                                     </div>
                             </form>
+                            <button id='find-all' type="" class="btn btn-danger">Hiển thị tất cả</button>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -59,7 +58,7 @@
                                         </tr>
                                         <?php $tien+=$val->giatri;?>
                                         @endforeach
-                                        <tr>
+                                        <tr @if(Request::get('query')==1) hidden @endif>
                                             <td colspan="6" style="text-align:center;">
                                                 Tổng các khoản chi bắt buộc: {{number_format($tien)}}
                                             </td>
@@ -141,5 +140,10 @@
                 location.href='{{route("dskc")}}?query='+qq
                 console.log(qq)
         });
+        $('#find-all').click(function () { 
+                var cc=1
+                location.href='{{route("dskc")}}?query='+cc
+                console.log(cc)
+            });
     </script>
 @endsection

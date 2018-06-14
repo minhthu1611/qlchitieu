@@ -11,20 +11,19 @@
                                         <div class="input-group justify-content-end">
                                             <select name="query" id="query" class="form-control">
                                                 <option value="">--Thời điểm--</option>
-                                                <option value="2018-01">01-2018</option>
-                                                <option value="2018-02">02-2018</option>
-                                                <option value="2018-03">03-2018</option>
-                                                <option value="2018-04">04-2018</option>
-                                                <option value="2018-05">05-2018</option>
-                                                <option value="2018-06">06-2018</option>
+                                                <?php $time=time()?>
+                                                @for($i=0;$i<6;$i++)
+                                                    {{$time=strtotime("-".$i."Months")}}
+                                                    <option value="{{date('Y-m', $time)}}">{{date('m-Y', $time)}}</option>
+                                                @endfor
                                             </select>
                                             {{-- <input type="text" name="query" class="form-control" placeholder="Tìm kiếm...">
                                             <span class="input-group-append">
                                                 <button class="btn btn-danger sub" type="submit"><i class="fe fe-search"></i></button>
                                             </span> --}}
-                                     
                                         </div>
                                 </form>
+                                <button id='find-all' type="" class="btn btn-danger">Hiển thị tất cả</button>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -35,7 +34,7 @@
                                             <th>Stt</th>
                                             <th>Chi tiêu ngày</th>
                                             <th>Giá trị</th>
-                                            <th>Tháng năm</th>
+                                            <th>Thời gian</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -53,16 +52,16 @@
                                             <td>{{$key+1}}</td>
                                             <td>{{($val->chitieu)}}</td>
                                             <td>{{number_format($val->giatri)}}</td>
-                                            <td>{{$val->ngaythang}}</td>
+                                            <td>{{substr($val->created_at,0,strpos($val->created_at,' '))}}</td>
                                             <td><button class="btn btn-danger delete"><i class="fe fe-trash"></i></button></td>
                                         </tr>
                                         <?php $tien+=$val->giatri;?>
                                         @endforeach
-                                        <tr>
+                                        <tr @if(Request::get('query')==1) hidden @endif>
                                         <td colspan="5" style="text-align:center">Số tiền còn lại:{{number_format(($money_can_use)-$tien)}}
                                             <?php $money_saved=$money_can_use-$tien;?>
                                             @if($money_saved<0)
-                                                <p ><h1 class='text-danger'>Bạn đã bị viêm màng túi!<h1></p>
+                                                <p><h1 class='text-danger'>Bạn đã bị viêm màng túi!<h1></p>
                                             @endif
                                         </td>
                                         </tr>
@@ -143,6 +142,11 @@
                 var qq=$(this).val()
                 location.href='{{route("tkct")}}?query='+qq
                 console.log(qq)
+            });
+            $('#find-all').click(function () { 
+                var cc=1
+                location.href='{{route("tkct")}}?query='+cc
+                console.log(cc)
             });
     </script>
 @endsection

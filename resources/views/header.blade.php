@@ -12,27 +12,15 @@
             <span class="nav-unread"></span>
           </a>
           <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-            <a href="#" class="dropdown-item d-flex">
-              <span class="avatar mr-3 align-self-center" style="background-image: url(demo/faces/male/41.jpg)"></span>
-              <div>
-                <strong>Nathan</strong> pushed new commit: Fix page load performance issue.
-                <div class="small text-muted">10 minutes ago</div>
-              </div>
-            </a>
-            <a href="#" class="dropdown-item d-flex">
-              <span class="avatar mr-3 align-self-center" style="background-image: url(demo/faces/female/1.jpg)"></span>
-              <div>
-                <strong>Alice</strong> started new task: Tabler UI design.
-                <div class="small text-muted">1 hour ago</div>
-              </div>
-            </a>
-            <a href="#" class="dropdown-item d-flex">
-              <span class="avatar mr-3 align-self-center" style="background-image: url(demo/faces/female/18.jpg)"></span>
-              <div>
-                <strong>Rose</strong> deployed new version of NodeJS REST Api V3
-                <div class="small text-muted">2 hours ago</div>
-              </div>
-            </a>
+            <?php $time=time()?>
+            @if(date('d', $time)=='11')
+              <a href="{{route('gtkc')}}" class="dropdown-item d-flex">
+                <span class="avatar mr-3 align-self-center" style="background-image: url(demo/faces/male/41.jpg)"></span>
+                <div>
+                  <strong>Cập nhật khoản chi bắt buộc trong tháng này!!!</strong>
+                </div>
+              </a>
+            @endif
             <div class="dropdown-divider"></div>
             <a href="#" class="dropdown-item text-center text-muted-dark">Mark all as read</a>
           </div>
@@ -57,15 +45,15 @@
               </a>
           <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
             <a class="dropdown-item" href="{{route('edit')}}">
-              <i class="dropdown-icon fe fe-user"></i> Profile
+               Profile
             </a>
-            <a class="dropdown-item" href="#">
-              <i class="dropdown-icon fe fe-settings"></i> Settings
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{{route('changepassword')}}">
+               Change password
             </a>
-    
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="{{route('logout')}}">
-              <i class="dropdown-icon fe fe-log-out"></i> Sign out
+               Sign out
             </a>
           </div>
         </div>
