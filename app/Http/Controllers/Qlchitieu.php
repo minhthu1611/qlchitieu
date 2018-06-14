@@ -389,11 +389,6 @@ class Qlchitieu extends Controller
             }
             else{
                 $day='';
-                // $date=[];
-                // for($i=0;$i<=6;$i++)
-                // {
-                //     $date[]=date("Y-m",mktime(0,0,0,date('m')-$i,date('d'),date('Y')));
-                // }
                 $chitieu=chitieungay::where('user_id',Auth::guard('user')->user()->id)
                 ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->get();
                 $chibatbuoc=khoanchi::where('user_id',Auth::guard('user')->user()->id)
@@ -422,15 +417,30 @@ class Qlchitieu extends Controller
                         }
                     }
             }
-           // dd($chihangthang);
-            
-       
             return view('modules.money_used',compact('chihangthang','day'));
     }
 
-    public function chitieutheothang(){
-
-        return view('modules/chitieutheothang');
+    public function chitieutheothang(Request $request){
+            $ctn=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->get('query'))->get();
+            $kc=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->get('query'))->get();
+            $tnps=thunhapps::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->get('query'))->get();    
+        if($request->get('query') && $request->get('query')!=''){
+            $ctn=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->get('query'))->get();
+            $kc=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->get('query'))->get();
+            $tnps=thunhapps::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->get('query'))->get();    
+        }
+        else
+        {
+            $ctn=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',date('Y-m'))->get();
+            $kc=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',date('Y-m'))->get();
+            $tnps=thunhapps::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',date('Y-m'))->get();    
+        }
+        $qq=0;
+        if(count($tnps)==0 && count($ctn)==0 && count($kc)==0)
+        {
+            $qq=1;
+        }
+        return view('modules/chitieutheothang', compact('ctn','kc','tnps','qq'));
     }
 
     public function Get_thu_nhap(){
