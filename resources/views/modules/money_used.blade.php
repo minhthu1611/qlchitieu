@@ -33,8 +33,11 @@
                                         <tr class="bg-red">
                                             <th>Stt</th>
                                             <th>Tháng</th>
+                                          
+                                            <th>Khoản bắt buộc</th>
+                                            <th>Khoản phát sinh</th>
                                             <th>Tổng chi tiêu hàng tháng</th>
-                                            <th>***</th>
+                                            <th width='20'><button class="btn btn-success report"> <i class="fe fe-file-text"></i> Xuất excel</button></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -43,7 +46,10 @@
                                         <tr>
                                             <td>{{$key+1}}</td>
                                             <td>{{$val['ngaythang']}}</td>
-                                            <td>{{number_format($val['tongchi'])}}</td>
+                                           
+                                            <td>{{ isset($val['batbuoc'])? number_format($val['batbuoc']):'0 đ' }}</td>
+                                            <td>{{ isset($val['phatsinh'])? number_format($val['phatsinh']): '0 đ' }}</td>
+                                            <td>{{number_format($val['tongchi']). ' đ'}}</td>
                                             <td></td>
                                         </tr>
                                         <?php ?>
@@ -70,6 +76,10 @@
             var cc=''
             location.href='{{route("gmoney-used")}}?query='+cc
             console.log(cc)
+        });
+        $('.report').click(function (e) { 
+            location.href="{{ route('report') }}"
+            
         });
     </script>
 @endsection

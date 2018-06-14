@@ -21,6 +21,10 @@ use GuzzleHttp\Client;
 use Carbon;
 use DB;
 use Hash;
+use PHPExcel;
+use PHPExcel_IOFactory;
+use PHPExcel_Style_Border;
+use PHPExcel_Style_Alignment;
 class Qlchitieu extends Controller
 {
     //
@@ -398,7 +402,7 @@ class Qlchitieu extends Controller
 
                     foreach($chibatbuoc as $cbb){
 
-                        $chihangthang[]=['ngaythang'=>$cbb->ngaythang,'tongchi'=>$cbb->sotien];
+                        $chihangthang[]=['ngaythang'=>$cbb->ngaythang,'tongchi'=>$cbb->sotien,'batbuoc'=>$cbb->sotien];
                     }
                     foreach($chitieu as $ct){
                         $t=-1;
@@ -411,12 +415,14 @@ class Qlchitieu extends Controller
                         }
                         if($t>-1){
                             $chihangthang[$t]['tongchi']= intval($chihangthang[$t]['tongchi'])+intval($ct->sotien);
+                            $chihangthang[$t]['phatsinh']=$ct->sotien;
                         }
                         else{
-                            $chihangthang[]=['ngaythang'=>$ct->ngaythang,'tongchi'=>$ct->sotien];
+                            $chihangthang[]=['ngaythang'=>$ct->ngaythang,'tongchi'=>$ct->sotien,'phatsinh'=>$ct->sotien];
                         }
                     }
             }
+           // dd($chihangthang);
             
        
             return view('modules.money_used',compact('chihangthang','day'));
@@ -487,5 +493,87 @@ class Qlchitieu extends Controller
                return 'error';
             } 
         }
+    }
+    public function report()
+    {
+        $chitieu=chitieungay::where('user_id',Auth::guard('user')->user()->id)
+        ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->get();
+        $chibatbuoc=khoanchi::where('user_id',Auth::guard('user')->user()->id)
+        ->groupBy('ngaythang')->select(DB::raw('sum(giatri) sotien'),'ngaythang')->get();
+    
+
+            foreach($chibatbuoc as $cbb){
+
+                $chihangthang[]=['ngaythang'=>$cbb->ngaythang,'tongchi'=>$cbb->sotien,'batbuoc'=>$cbb->sotien];
+            }
+            foreach($chitieu as $ct){
+                $t=-1;
+                foreach($chihangthang as $key=> $k){
+                    if($ct->ngaythang==$k['ngaythang']){
+                        $t=$key;
+                        break;
+                    }
+                    
+                }
+                if($t>-1){
+                    $chihangthang[$t]['tongchi']= intval($chihangthang[$t]['tongchi'])+intval($ct->sotien);
+                    $chihangthang[$t]['phatsinh']=$ct->sotien;
+                }
+                else{
+                    $chihangthang[]=['ngaythang'=>$ct->ngaythang,'tongchi'=>$ct->sotien,'phatsinh'=>$ct->sotien];
+                }
+            }
+        // dd($chihangthang);
+        $excel = new PHPExcel();
+
+        $excel->setActiveSheetIndex(0);
+        
+        $excel->getDefaultStyle()->getFont()->setName('Times New Roman');
+        $excel->getDefaultStyle()->getFont()->setSize(13);
+        $excel->getActiveSheet()->getColumnDimension('B')->setWidth(10);
+        $excel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+        $excel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
+        $excel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
+        $excel->getActiveSheet()->setTitle('Thống kê chi tiêu');
+        $excel->getActiveSheet()->setCellValue('B1'  ,'      Thống kê chi tiêu');
+        $excel->getActiveSheet()->getStyle("B1")->getFont()->setSize(30);
+        $excel->getActiveSheet()->setCellValue('A3'  ,'Mã người dùng: 0'.Auth::guard('user')->user()->id);
+        $excel->getActiveSheet()->setCellValue('A4'  ,'Tài khoản: '.Auth::guard('user')->user()->email);
+        $excel->getActiveSheet()->setCellValue('A5'  ,'Họ tên: '.Auth::guard('user')->user()->hoten);
+        $excel->getActiveSheet()->setCellValue('A6'  ,'Thu nhập hiện tại: '.number_format(Auth::guard('user')->user()->thunhap). ' đ');
+        $row=8;
+        $excel->getActiveSheet()->setCellValue('A'.$row  ,'STT');
+        $excel->getActiveSheet()->setCellValue('B'.$row  ,'Tháng');
+        $excel->getActiveSheet()->setCellValue('E'.$row  ,'Tổng chi tiêu');
+        $excel->getActiveSheet()->setCellValue('C'.$row  ,'Khoản bắt buộc');
+        $excel->getActiveSheet()->setCellValue('D'.$row  ,'Khoản phát sinh');
+        $excel->getActiveSheet()->getStyle('A'.$row.':E'.$row.'')->getFont()->setBold(true);
+  
+        foreach($chihangthang as $key=>$value){
+            $row++;
+            $stt=$key+1;
+            $excel->getActiveSheet()->setCellValue('A'.$row  ,$stt);
+            $excel->getActiveSheet()->setCellValue('B'.$row  ,$value['ngaythang']);
+            $excel->getActiveSheet()->setCellValue('E'.$row  ,number_format($value['tongchi']). ' đ');
+            $excel->getActiveSheet()->setCellValue('C'.$row  ,isset($value['batbuoc'])? number_format($value['batbuoc']). ' đ': '0 đ');
+            $excel->getActiveSheet()->setCellValue('D'.$row  ,isset($value['phatsinh'])? number_format($value['phatsinh']). ' đ': '0 đ');
+            
+        }
+        $excel->getActiveSheet()
+        ->getStyle('A8:E'.$row)
+        ->getAlignment()
+        ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $styleArray = array(
+            'borders' => array(
+                'allborders' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN
+                )
+            )
+        );
+      $excel->getActiveSheet()->getStyle("A8:E".$row)->applyFromArray($styleArray);
+
+        header('Content-type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename="thongkechitieu.xls"');
+        PHPExcel_IOFactory::createWriter($excel, 'Excel2007')->save('php://output');
     }
 }
