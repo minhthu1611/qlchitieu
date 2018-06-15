@@ -32,7 +32,7 @@
                                         <table class="table table-hover">
                                             <thead>
                                                 <tr class="bg-white">
-                                                    <td colspan="3" style="text-align:center; color:red; font-size:20px;">
+                                                    <td colspan="4" style="text-align:center; color:red; font-size:20px;">
                                                         <b>DANH SÁCH TẤT CẢ KHOẢN CHI BẮT BUỘC TRONG THÁNG</b>
                                                     </td>
                                                 </tr>
@@ -125,11 +125,7 @@
             </div>
         </div>
     </div>
-    @if(Session::has('message'))
-    <script>
-        mess('success',"{{Session::get('message')}}")
-    </script>
-    @endif
+
     <script>
         $('#query').change(function () { 
                 var qq=$(this).val()

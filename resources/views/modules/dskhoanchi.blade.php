@@ -12,7 +12,7 @@
                                         <select name="query" id="query" class="form-control">
                                                 <?php $time=time()?>
                                                 <option value="">--Thời điểm--</option>
-                                                @for($i=0;$i<6;$i++)
+                                                @for($i=0;$i<13;$i++)
                                                     {{ $time=strtotime("-".$i."Months") }}
                                                     <option @if($day==date('Y-m',$time)) selected @endif value="{{date('Y-m', $time)}}">{{date('Y-m', $time)}}</option>
                                                 @endfor

@@ -464,10 +464,7 @@ class Qlchitieu extends Controller
             return view('modules.money_used',compact('chihangthang','day'));
     }
 
-    public function chitieutheothang(Request $request){
-            // $ctn=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->get('query'))->get();
-            // $kc=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->get('query'))->get();
-            // $tnps=thunhapps::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->get('query'))->get();    
+    public function chitieutheothang(Request $request){   
         if($request->get('query') && $request->get('query')!=''){
             $ctn=chitieungay::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->get('query'))->get();
             $kc=khoanchi::where('user_id',Auth::guard('user')->user()->id)->where('ngaythang',$request->get('query'))->get();
@@ -624,7 +621,7 @@ class Qlchitieu extends Controller
         $excel->getActiveSheet()->getColumnDimension('E')->setWidth(20);
         $excel->getActiveSheet()->getColumnDimension('F')->setWidth(20);
         $excel->getActiveSheet()->setTitle('Thống kê chi tiêu');
-        $excel->getActiveSheet()->setCellValue('C1'  ,'      Thống kê chi tiêu ');
+        $excel->getActiveSheet()->setCellValue('C1'  ,'      Thống Kê Chi Tiêu ');
         $excel->getActiveSheet()->setCellValue('C2'  ,'      '.date('m/Y',strtotime("-12 Months")).' - '.date('m/Y')); 
         $excel->getActiveSheet()->getStyle("C1")->getFont()->setSize(30);
         $excel->getActiveSheet()->getStyle("C2")->getFont()->setSize(30);
@@ -690,6 +687,7 @@ class Qlchitieu extends Controller
         else{
 
             $excel = new PHPExcel();
+
 
             $excel->setActiveSheetIndex(0);
             
