@@ -7,6 +7,7 @@
     <title>Document</title>
     <link href="{!! asset('/assets/css/dashboard.css') !!}" rel="stylesheet" />
     <link rel="stylesheet" href="{{asset('/assets/css/custom.css')}}">
+    <script src="{{ asset('/assets/js/jquery.min.js') }}"></script>
 </head>
 <body>
     <div class="container-fluid">
@@ -62,7 +63,8 @@
                             </div>
                             <div class="form-group">
                                 <label>Thu nhập</label>
-                                <input type="number" class="form-control" name="thunhap" value="{{old('thunhap')}}">
+                                <input type="number" class="form-control" id='sotien' name="thunhap" value="{{old('thunhap')}}">
+                                <p class="text-success"></p>
                                 <p class="text-danger">{{$errors->first('thunhap')}}</p>
                             </div>
                             <div class="text-right">
@@ -75,5 +77,31 @@
         </div>
     </div>
 </body>
-
+<script>
+    $(document).ready(function () {
+            change_money()
+        });
+        function addCommas(nStr)
+        {
+            nStr += '';
+            x = nStr.split('.');
+            x1 = x[0];
+            x2 = x.length > 1 ? '.' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            }
+            return x1 + x2;
+        }
+        $('#sotien').keyup(function (e) { 
+            change_money()
+        });
+        function change_money(){
+            var t=$('#sotien').val().replace(/[,]/g,'');
+           
+           var k=addCommas(t)
+         
+          $('.text-success').text(addCommas(k)+' VNĐ')
+        }
+</script>
 </html>

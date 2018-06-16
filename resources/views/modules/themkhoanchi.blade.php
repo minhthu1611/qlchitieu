@@ -22,7 +22,8 @@
                                 </div>
                                 <div class="form-group">
                                         <label>Số tiền</label>
-                                        <input type="money" class="form-control" name="sotien" id="sotien" value="{{old('sotien')}}">
+                                        <input type="number" class="form-control" name="sotien" id="sotien" value="{{old('sotien')}}">
+                                        <p class="text-success"></p>
                                         <p class="text-danger">{{$errors->first('sotien')}}</p>
                                     </div>
                                 <div class="form-group">
@@ -57,7 +58,10 @@
         mess('error',"{{Session::get('message')}}")
     </script>
     @endif
-    {{-- <script>
+    <script>
+        $(document).ready(function () {
+            change_money()
+        });
         function addCommas(nStr)
         {
             nStr += '';
@@ -71,11 +75,14 @@
             return x1 + x2;
         }
         $('#sotien').keyup(function (e) { 
-            var t=this.value.replace(/[,]/g,'');
-           
-            var k=addCommas(t)
-          
-           $(this).val(addCommas(k))
+            change_money()
         });
-    </script> --}}
+        function change_money(){
+            var t=$('#sotien').val().replace(/[,]/g,'');
+           
+           var k=addCommas(t)
+         
+          $('.text-success').text(addCommas(k)+' VNĐ')
+        }
+    </script>
 @endsection
